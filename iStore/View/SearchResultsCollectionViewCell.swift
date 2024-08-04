@@ -4,6 +4,10 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "SearchResultsCollectionViewCell"
     
+    private lazy var screenShotImageView1 = createScreenShotImageView()
+    private lazy var screenShotImageView2 = createScreenShotImageView()
+    private lazy var screenShotImageView3 = createScreenShotImageView()
+    
     private let appIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +66,6 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
-    private lazy var screenShotImageView1 = createScreenShotImageView()
-    private lazy var screenShotImageView2 = createScreenShotImageView()
-    private lazy var screenShotImageView3 = createScreenShotImageView()
     
     private func createScreenShotImageView() -> UIImageView {
         let imageView = UIImageView()

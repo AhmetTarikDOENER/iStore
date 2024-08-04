@@ -16,6 +16,7 @@
 		45FF94402C5FA7390087AF62 /* SearchResultsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF943F2C5FA7390087AF62 /* SearchResultsCollectionViewCell.swift */; };
 		45FF94452C5FE0CD0087AF62 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94442C5FE0CD0087AF62 /* UIView+Extension.swift */; };
 		45FF94482C5FE7340087AF62 /* VerticalStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94472C5FE7340087AF62 /* VerticalStackView.swift */; };
+		45FF944D2C5FF3E00087AF62 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF944C2C5FF3E00087AF62 /* SearchResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		45FF943F2C5FA7390087AF62 /* SearchResultsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCollectionViewCell.swift; sourceTree = "<group>"; };
 		45FF94442C5FE0CD0087AF62 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		45FF94472C5FE7340087AF62 /* VerticalStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalStackView.swift; sourceTree = "<group>"; };
+		45FF944C2C5FF3E00087AF62 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,14 +64,12 @@
 		45FF94242C5F8C650087AF62 /* iStore */ = {
 			isa = PBXGroup;
 			children = (
+				45FF944A2C5FED4B0087AF62 /* Delegate */,
 				45FF94462C5FE7230087AF62 /* Helper */,
-				45FF94432C5FE0A50087AF62 /* Extension */,
+				45FF944B2C5FF3D30087AF62 /* Model */,
 				45FF943E2C5FA71F0087AF62 /* View */,
 				45FF943B2C5F9E5E0087AF62 /* Controller */,
-				45FF94252C5F8C650087AF62 /* AppDelegate.swift */,
-				45FF94272C5F8C650087AF62 /* SceneDelegate.swift */,
-				45FF942E2C5F8C660087AF62 /* Assets.xcassets */,
-				45FF94302C5F8C660087AF62 /* LaunchScreen.storyboard */,
+				45FF94492C5FED390087AF62 /* Resource */,
 				45FF94332C5F8C660087AF62 /* Info.plist */,
 			);
 			path = iStore;
@@ -103,9 +103,36 @@
 		45FF94462C5FE7230087AF62 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				45FF94432C5FE0A50087AF62 /* Extension */,
 				45FF94472C5FE7340087AF62 /* VerticalStackView.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		45FF94492C5FED390087AF62 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				45FF942E2C5F8C660087AF62 /* Assets.xcassets */,
+				45FF94302C5F8C660087AF62 /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		45FF944A2C5FED4B0087AF62 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				45FF94252C5F8C650087AF62 /* AppDelegate.swift */,
+				45FF94272C5F8C650087AF62 /* SceneDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		45FF944B2C5FF3D30087AF62 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				45FF944C2C5FF3E00087AF62 /* SearchResult.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +207,7 @@
 			files = (
 				45FF94452C5FE0CD0087AF62 /* UIView+Extension.swift in Sources */,
 				45FF94262C5F8C650087AF62 /* AppDelegate.swift in Sources */,
+				45FF944D2C5FF3E00087AF62 /* SearchResult.swift in Sources */,
 				45FF943A2C5F8F090087AF62 /* RootViewController.swift in Sources */,
 				45FF943D2C5F9E860087AF62 /* SearchCollectionViewController.swift in Sources */,
 				45FF94402C5FA7390087AF62 /* SearchResultsCollectionViewCell.swift in Sources */,
