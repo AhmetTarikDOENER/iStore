@@ -4,7 +4,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "SearchResultsCollectionViewCell"
     
-    private let imageView: UIImageView = {
+    private let appIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .red
@@ -48,6 +48,8 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         button.titleLabel?.font = .boldSystemFont(ofSize: 14)
         button.backgroundColor = .quaternaryLabel
         button.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        button.layer.cornerRadius = 15
 
         return button
     }()
@@ -61,24 +63,34 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         fatalError()
     }
     
+    private lazy var screenShotImageView1 = createScreenShotImageView()
+    private lazy var screenShotImageView2 = createScreenShotImageView()
+    private lazy var screenShotImageView3 = createScreenShotImageView()
+    
+    private func createScreenShotImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .systemBlue
+        
+        return imageView
+    }
+    
     private func configureHierarchy() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        let labelsStackView = UIStackView(arrangedSubviews: [nameLabel, categoryLabel, ratingLabel])
-        labelsStackView.translatesAutoresizingMaskIntoConstraints = false
-        labelsStackView.axis = .vertical
-        let stackView = UIStackView(arrangedSubviews: [imageView, labelsStackView, getButton])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 12
-        stackView.alignment = .center
-        stackView.backgroundColor = .systemCyan
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.directionalLayoutMargins = .init(top: 0, leading: 15, bottom: 0, trailing: 15)
-        contentView.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
+        let infoTopStackView = UIStackView(
+            arrangedSubviews: [
+                appIconImageView,
+                VerticalStackView(arrangedSubviews: [nameLabel, categoryLabel, ratingLabel]),
+                getButton
+            ]
+        )
+        infoTopStackView.spacing = 12
+        infoTopStackView.alignment = .center
+        let screenShotStackView = UIStackView(arrangedSubviews: [screenShotImageView1, screenShotImageView2, screenShotImageView3])
+        screenShotStackView.spacing = 12
+        screenShotStackView.distribution = .fillEqually
+        let overallStackView = VerticalStackView(arrangedSubviews: [infoTopStackView, screenShotStackView], spacing: 15)
+        addSubview(overallStackView)
+        overallStackView.directionalLayoutMargins = .init(top: 0, leading: 15, bottom: 15, trailing: 15)
+        overallStackView.fillSuperView()
     }
 }

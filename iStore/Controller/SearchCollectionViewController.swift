@@ -31,6 +31,6 @@ extension SearchCollectionViewController {
 //  MARK: - UICollectionViewDelegateFlowLayout:
 extension SearchCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: 250)
+        .init(width: collectionView.frame.width, height: 300)
     }
 }
