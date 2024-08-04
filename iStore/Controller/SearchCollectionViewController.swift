@@ -2,6 +2,8 @@ import UIKit
 
 final class SearchCollectionViewController: UICollectionViewController {
     
+    private var appResults = [App]()
+    
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -14,34 +16,35 @@ final class SearchCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemBackground
         collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: SearchResultsCollectionViewCell.identifier)
-        fetchITunesApps()
+        fetchApps()
     }
 
-    private func fetchITunesApps() {
-        let urlString = "https://itunes.apple.com/search?term=instagram&entity=software"
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data, error == nil else { return }
-            do {
-                let searhcResult = try JSONDecoder().decode(SearchResult.self, from: data)
-                searhcResult.results.forEach {
-                    print($0.trackName, $0.primaryGenreName)
+    private func fetchApps() {
+        NetworkManager.shared.fetchApps { results in
+            switch results {
+            case .success(let apps):
+                DispatchQueue.main.async {
+                    self.appResults = apps
+                    self.collectionView.reloadData()
                 }
-            } catch {
-                print(error.localizedDescription)
+            case .failure(let error):
+                ()
             }
-        }.resume()
+        }
     }
 }
 //  MARK: - UICollectionViewDataSource:
 extension SearchCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        appResults.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCollectionViewCell.identifier, for: indexPath) as! SearchResultsCollectionViewCell
-        
+        let appResult = appResults[indexPath.item]
+        cell.nameLabel.text = appResult.trackName
+        cell.categoryLabel.text = appResult.primaryGenreName
+        cell.ratingLabel.text = "Rating: \(appResult.averageUserRating ?? 0)"
         return cell
     }
 }

@@ -20,7 +20,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "APP NAME"
@@ -28,7 +28,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let categoryLabel: UILabel = {
+    let categoryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Photos & Videos"
@@ -36,7 +36,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let ratingLabel: UILabel = {
+    let ratingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "1.23M"
