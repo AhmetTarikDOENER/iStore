@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		45FF94262C5F8C650087AF62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94252C5F8C650087AF62 /* AppDelegate.swift */; };
 		45FF94282C5F8C650087AF62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94272C5F8C650087AF62 /* SceneDelegate.swift */; };
-		45FF942A2C5F8C650087AF62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94292C5F8C650087AF62 /* ViewController.swift */; };
 		45FF942F2C5F8C660087AF62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45FF942E2C5F8C660087AF62 /* Assets.xcassets */; };
 		45FF94322C5F8C660087AF62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45FF94302C5F8C660087AF62 /* LaunchScreen.storyboard */; };
 		45FF943A2C5F8F090087AF62 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94392C5F8F090087AF62 /* RootViewController.swift */; };
+		45FF943D2C5F9E860087AF62 /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF943C2C5F9E860087AF62 /* SearchCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		45FF94222C5F8C650087AF62 /* iStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45FF94252C5F8C650087AF62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		45FF94272C5F8C650087AF62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		45FF94292C5F8C650087AF62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		45FF942E2C5F8C660087AF62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45FF94312C5F8C660087AF62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45FF94332C5F8C660087AF62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		45FF94392C5F8F090087AF62 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		45FF943C2C5F9E860087AF62 /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +56,23 @@
 		45FF94242C5F8C650087AF62 /* iStore */ = {
 			isa = PBXGroup;
 			children = (
+				45FF943B2C5F9E5E0087AF62 /* Controller */,
 				45FF94252C5F8C650087AF62 /* AppDelegate.swift */,
 				45FF94272C5F8C650087AF62 /* SceneDelegate.swift */,
-				45FF94292C5F8C650087AF62 /* ViewController.swift */,
 				45FF942E2C5F8C660087AF62 /* Assets.xcassets */,
 				45FF94302C5F8C660087AF62 /* LaunchScreen.storyboard */,
 				45FF94332C5F8C660087AF62 /* Info.plist */,
-				45FF94392C5F8F090087AF62 /* RootViewController.swift */,
 			);
 			path = iStore;
+			sourceTree = "<group>";
+		};
+		45FF943B2C5F9E5E0087AF62 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				45FF94392C5F8F090087AF62 /* RootViewController.swift */,
+				45FF943C2C5F9E860087AF62 /* SearchCollectionViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,9 +145,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45FF942A2C5F8C650087AF62 /* ViewController.swift in Sources */,
 				45FF94262C5F8C650087AF62 /* AppDelegate.swift in Sources */,
 				45FF943A2C5F8F090087AF62 /* RootViewController.swift in Sources */,
+				45FF943D2C5F9E860087AF62 /* SearchCollectionViewController.swift in Sources */,
 				45FF94282C5F8C650087AF62 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

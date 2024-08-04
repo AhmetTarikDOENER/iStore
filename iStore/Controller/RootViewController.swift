@@ -4,12 +4,7 @@ final class RootViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        viewControllers = [
-            createNavigationController(viewController: UIViewController(), title: "Today", imageName: "today_icon"),
-            createNavigationController(viewController: UIViewController(), title: "Apps", imageName: "apps"),
-            createNavigationController(viewController: UIViewController(), title: "Search", imageName: "search")
-        ]
+        configureHierarchy()
     }
     
     private func createNavigationController(viewController: UIViewController, title: String, imageName: String) -> UIViewController {
@@ -20,5 +15,18 @@ final class RootViewController: UITabBarController {
         navigationController.navigationBar.prefersLargeTitles = true
         
         return navigationController
+    }
+    
+    private func configureHierarchy() {
+        view.backgroundColor = .systemBackground
+        viewControllers = [
+            createNavigationController(
+                viewController: SearchCollectionViewController(),
+                title: "Search",
+                imageName: "search"
+            ),
+            createNavigationController(viewController: UIViewController(), title: "Today", imageName: "today_icon"),
+            createNavigationController(viewController: UIViewController(), title: "Apps", imageName: "apps"),
+        ]
     }
 }
