@@ -10,7 +10,7 @@ final class NetworkManager {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data, error == nil else { return }
             do {
-                let searhcResult = try JSONDecoder().decode(SearchResult.self, from: data)
+                let searhcResult = try JSONDecoder().decode(AppResult.self, from: data)
                 completion(.success(searhcResult.results))
             } catch {
                 print(error.localizedDescription)

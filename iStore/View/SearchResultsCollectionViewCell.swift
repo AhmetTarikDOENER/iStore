@@ -4,11 +4,11 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "SearchResultsCollectionViewCell"
     
-    private lazy var screenShotImageView1 = createScreenShotImageView()
-    private lazy var screenShotImageView2 = createScreenShotImageView()
-    private lazy var screenShotImageView3 = createScreenShotImageView()
+    lazy var screenShotImageView1 = createScreenShotImageView()
+    lazy var screenShotImageView2 = createScreenShotImageView()
+    lazy var screenShotImageView3 = createScreenShotImageView()
     
-    private let appIconImageView: UIImageView = {
+    let appIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .red
@@ -16,6 +16,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
         imageView.widthAnchor.constraint(equalToConstant: 65).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 65).isActive = true
         imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         
         return imageView
     }()
