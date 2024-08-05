@@ -28,7 +28,6 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     let appIconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .red
         imageView.contentMode = .scaleAspectFill
         imageView.widthAnchor.constraint(equalToConstant: 65).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 65).isActive = true
