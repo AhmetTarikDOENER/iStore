@@ -4,7 +4,7 @@ final class AppsCollectionViewController: RootListCollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .systemYellow
+        collectionView.backgroundColor = .systemBackground
         collectionView.register(AppsGroupCollectionViewCell.self, forCellWithReuseIdentifier: AppsGroupCollectionViewCell.identifier)
     }
 }
@@ -23,6 +23,10 @@ extension AppsCollectionViewController {
 //  MARK: - UICollectionViewDelegateFlowLayout:
 extension AppsCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width, height: 250)
+        .init(width: collectionView.frame.width, height: 300)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        .init(top: 10, left: 0, bottom: 0, right: 0)
     }
 }

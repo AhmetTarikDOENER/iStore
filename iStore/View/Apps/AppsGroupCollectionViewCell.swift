@@ -17,9 +17,7 @@ final class AppsGroupCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureHierarchy() {
-        backgroundColor = .lightGray
         contentView.addSubviews(titleLabel, horizontalCollectionViewController.view)
-        horizontalCollectionViewController.view.backgroundColor = .systemBlue
         horizontalCollectionViewController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
