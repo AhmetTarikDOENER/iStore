@@ -3,7 +3,8 @@ import SDWebImage
 
 final class SearchCollectionViewController: UICollectionViewController {
     
-    private var appResults = [App]()
+    private var apps = [App]()
+    private let searchController = UISearchController(searchResultsController: nil)
     
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -17,15 +18,23 @@ final class SearchCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemBackground
         collectionView.register(SearchResultsCollectionViewCell.self, forCellWithReuseIdentifier: SearchResultsCollectionViewCell.identifier)
+        configureSearchBar()
         fetchApps()
+    }
+    
+    private func configureSearchBar() {
+        definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.searchBar.delegate = self
     }
 
     private func fetchApps() {
-        NetworkManager.shared.fetchApps { results in
+        NetworkManager.shared.fetchApps(searchTerm: "Facebook") { results in
             switch results {
             case .success(let apps):
                 DispatchQueue.main.async {
-                    self.appResults = apps
+                    self.apps = apps
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -37,12 +46,12 @@ final class SearchCollectionViewController: UICollectionViewController {
 //  MARK: - UICollectionViewDataSource:
 extension SearchCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        appResults.count
+        apps.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultsCollectionViewCell.identifier, for: indexPath) as! SearchResultsCollectionViewCell
-        cell.appResult = appResults[indexPath.item]
+        cell.appResult = apps[indexPath.item]
 
         return cell
     }
@@ -51,5 +60,11 @@ extension SearchCollectionViewController {
 extension SearchCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: 300)
+    }
+}
+//  MARK: - UISearchBarDelegate:
+extension SearchCollectionViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
     }
 }

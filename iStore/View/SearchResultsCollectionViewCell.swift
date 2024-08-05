@@ -41,7 +41,10 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "APP NAME"
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
         
         return label
     }()
@@ -49,7 +52,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     let categoryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Photos & Videos"
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         
         return label
     }()
@@ -57,7 +60,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     let ratingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "1.23M"
+        label.font = .preferredFont(forTextStyle: .footnote)
         
         return label
     }()
