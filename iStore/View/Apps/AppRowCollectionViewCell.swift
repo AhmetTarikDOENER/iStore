@@ -23,7 +23,7 @@ final class AppRowCollectionViewCell: UICollectionViewCell {
         nameLabel.numberOfLines = 2
         nameLabel.minimumScaleFactor = 0.75
         nameLabel.adjustsFontSizeToFitWidth = true
-        getButton.backgroundColor = .lightGray
+        getButton.backgroundColor = UIColor(white: 0.5, alpha: 0.2)
         getButton.layer.cornerRadius = 16
         getButton.setTitleColor(.label, for: .normal)
         let stackView = UIStackView(

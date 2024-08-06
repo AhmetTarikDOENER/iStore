@@ -2,7 +2,7 @@ import UIKit
 
 final class AppsMainCollectionViewController: RootListCollectionViewController {
     
-    var topFreeApps: AppRowResults?
+    var groups = [AppRowResults]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,8 +16,21 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
         NetworkManager.shared.fetchTopFreeAppsForRows { results in
             switch results {
             case .success(let topFreeApps):
+                guard let topFreeApps else { return }
                 DispatchQueue.main.async {
-                    self.topFreeApps = topFreeApps
+                    self.groups.append(topFreeApps)
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        NetworkManager.shared.fetchTopPaidsAppsForRows { results in
+            switch results {
+            case .success(let topPaidsApps):
+                guard let topPaidsApps else { return }
+                DispatchQueue.main.async {
+                    self.groups.append(topPaidsApps)
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -29,13 +42,14 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
 
 extension AppsMainCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        groups.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCollectionViewCell.identifier, for: indexPath) as! AppsGroupCollectionViewCell
-        cell.titleLabel.text = topFreeApps?.feed.title
-        cell.horizontalCollectionViewController.horizontalTopFreeApps = topFreeApps
+        let appGroup = groups[indexPath.item]
+        cell.titleLabel.text = appGroup.feed.title
+        cell.horizontalCollectionViewController.horizontalTopFreeApps = appGroup
         cell.horizontalCollectionViewController.collectionView.reloadData()
         return cell
     }
@@ -61,6 +75,6 @@ extension AppsMainCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 250)
+        .init(width: collectionView.frame.width, height: 0)
     }
 }

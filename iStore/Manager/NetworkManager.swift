@@ -18,8 +18,18 @@ final class NetworkManager {
         }.resume()
     }
     
-    func fetchTopFreeAppsForRows(completion: @escaping (Result<AppRowResults, Error>) -> Void) {
-        guard let url = URL(string: "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/50/apps.json") else { return }
+    func fetchTopFreeAppsForRows(completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
+        let urlString = "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/50/apps.json"
+        self.fetchAppGroup(urlString: urlString, completion: completion)
+    }
+    
+    func fetchTopPaidsAppsForRows(completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
+        let urlString = "https://rss.applemarketingtools.com/api/v2/us/apps/top-paid/50/apps.json"
+        self.fetchAppGroup(urlString: urlString, completion: completion)
+    }
+    
+    func fetchAppGroup(urlString: String, completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
+        guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data, error == nil else { return }
             do {
