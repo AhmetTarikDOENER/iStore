@@ -3,9 +3,21 @@ import UIKit
 final class AppsMainCollectionViewController: RootListCollectionViewController {
     
     var groups = [AppRowResults]()
+    var headerApps = [HeaderApps]()
+    
+    private let indicatorView: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.color = .label
+        spinner.startAnimating()
+        spinner.hidesWhenStopped = true
+        return spinner
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(indicatorView)
+        indicatorView.fillSuperView()
         collectionView.backgroundColor = .systemBackground
         collectionView.register(AppsGroupCollectionViewCell.self, forCellWithReuseIdentifier: AppsGroupCollectionViewCell.identifier)
         collectionView.register(AppsHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppsHeaderReusableView.identifier)
@@ -15,6 +27,7 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
     private func fetchData() {
         var group1: AppRowResults?
         var group2: AppRowResults?
+        var group3: HeaderApps?
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         NetworkManager.shared.fetchTopFreeAppsForRows { results in
@@ -38,10 +51,22 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
                 print(error.localizedDescription)
             }
         }
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchHeaderSocialApps { results in
+            dispatchGroup.leave()
+            switch results {
+            case .success(let headerApps):
+                self.headerApps = headerApps ?? []
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
         
         dispatchGroup.notify(queue: .main) {
+            self.indicatorView.stopAnimating()
             if let group = group1 { self.groups.append(group) }
             if let group = group2 { self.groups.append(group) }
+            if let headerGroup = group3 { self.headerApps.append(headerGroup) }
             self.collectionView.reloadData()
         }
     }
@@ -76,12 +101,13 @@ extension AppsMainCollectionViewController: UICollectionViewDelegateFlowLayout {
             ofKind: kind,
             withReuseIdentifier: AppsHeaderReusableView.identifier,
             for: indexPath
-        )
-        
+        ) as! AppsHeaderReusableView
+        header.headerHorizontalReusableController.headerApps = headerApps
+        header.headerHorizontalReusableController.collectionView.reloadData()
         return header
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        .init(width: collectionView.frame.width, height: 0)
+        .init(width: collectionView.frame.width, height: 300)
     }
 }

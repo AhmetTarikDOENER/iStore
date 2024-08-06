@@ -40,4 +40,18 @@ final class NetworkManager {
             }
         }.resume()
     }
+    
+    func fetchHeaderSocialApps(completion: @escaping (Result<[HeaderApps]?, Error>) -> Void) {
+        let urlString = "https://api.letsbuildthatapp.com/appstore/social"
+        guard let url = URL(string: urlString) else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data, error == nil else { return }
+            do {
+                let headerApps = try JSONDecoder().decode([HeaderApps].self, from: data)
+                completion(.success(headerApps))
+            } catch {
+                print(error.localizedDescription)
+            }
+        }.resume()
+    }
 }
