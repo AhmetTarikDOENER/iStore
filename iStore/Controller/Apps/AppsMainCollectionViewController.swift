@@ -13,29 +13,36 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
     }
     
     private func fetchData() {
+        var group1: AppRowResults?
+        var group2: AppRowResults?
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
         NetworkManager.shared.fetchTopFreeAppsForRows { results in
+            dispatchGroup.leave()
             switch results {
             case .success(let topFreeApps):
                 guard let topFreeApps else { return }
-                DispatchQueue.main.async {
-                    self.groups.append(topFreeApps)
-                    self.collectionView.reloadData()
-                }
+                group1 = topFreeApps
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
+        dispatchGroup.enter()
         NetworkManager.shared.fetchTopPaidsAppsForRows { results in
+            dispatchGroup.leave()
             switch results {
             case .success(let topPaidsApps):
                 guard let topPaidsApps else { return }
-                DispatchQueue.main.async {
-                    self.groups.append(topPaidsApps)
-                    self.collectionView.reloadData()
-                }
+                group2 = topPaidsApps
             case .failure(let error):
                 print(error.localizedDescription)
             }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            if let group = group1 { self.groups.append(group) }
+            if let group = group2 { self.groups.append(group) }
+            self.collectionView.reloadData()
         }
     }
 }
