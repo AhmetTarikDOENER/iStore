@@ -2,6 +2,8 @@ import UIKit
 
 final class AppsMainCollectionViewController: RootListCollectionViewController {
     
+    var topFreeApps: AppRowResults?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemBackground
@@ -11,10 +13,13 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
     }
     
     private func fetchData() {
-        NetworkManager.shared.fetchAppsForRows { results in
+        NetworkManager.shared.fetchTopFreeAppsForRows { results in
             switch results {
-            case .success(let appRowResults):
-                print(appRowResults.feed.results)
+            case .success(let topFreeApps):
+                DispatchQueue.main.async {
+                    self.topFreeApps = topFreeApps
+                    self.collectionView.reloadData()
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -24,12 +29,14 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
 
 extension AppsMainCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        1
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppsGroupCollectionViewCell.identifier, for: indexPath) as! AppsGroupCollectionViewCell
-        
+        cell.titleLabel.text = topFreeApps?.feed.title
+        cell.horizontalCollectionViewController.horizontalTopFreeApps = topFreeApps
+        cell.horizontalCollectionViewController.collectionView.reloadData()
         return cell
     }
 }

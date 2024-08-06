@@ -19,5 +19,4 @@ final class AppsHeaderReusableView: UICollectionReusableView {
         addSubviews(headerHorizontalReusableController.view)
         headerHorizontalReusableController.view.fillSuperView()
     }
-    
 }

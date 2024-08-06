@@ -1,6 +1,9 @@
 import UIKit
+import SDWebImage
 
 final class AppsHorizontalCollectionViewController: RootListCollectionViewController {
+    
+    var horizontalTopFreeApps: AppRowResults?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,12 +16,15 @@ final class AppsHorizontalCollectionViewController: RootListCollectionViewContro
 
 extension AppsHorizontalCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        13
+        horizontalTopFreeApps?.feed.results.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath)
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath) as! AppRowCollectionViewCell
+        let topFreeApp = horizontalTopFreeApps?.feed.results[indexPath.item]
+        cell.nameLabel.text = topFreeApp?.name
+        cell.companyNameLabel.text = topFreeApp?.artistName
+        cell.iconImageView.sd_setImage(with: URL(string: topFreeApp?.artworkUrl100 ?? ""))
         return cell
     }
 }

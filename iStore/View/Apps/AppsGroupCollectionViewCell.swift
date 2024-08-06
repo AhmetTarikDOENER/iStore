@@ -4,8 +4,8 @@ final class AppsGroupCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AppsGroupCollectionViewCell"
     
-    private let titleLabel = UILabel(text: "App Section", font: .boldSystemFont(ofSize: 25))
-    private let horizontalCollectionViewController = AppsHorizontalCollectionViewController()
+    let titleLabel = UILabel(text: "App Section", font: .boldSystemFont(ofSize: 25))
+    let horizontalCollectionViewController = AppsHorizontalCollectionViewController()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -18,7 +18,7 @@ final class NetworkManager {
         }.resume()
     }
     
-    func fetchAppsForRows(completion: @escaping (Result<AppRowResults, Error>) -> Void) {
+    func fetchTopFreeAppsForRows(completion: @escaping (Result<AppRowResults, Error>) -> Void) {
         guard let url = URL(string: "https://rss.applemarketingtools.com/api/v2/us/apps/top-free/50/apps.json") else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data, error == nil else { return }
