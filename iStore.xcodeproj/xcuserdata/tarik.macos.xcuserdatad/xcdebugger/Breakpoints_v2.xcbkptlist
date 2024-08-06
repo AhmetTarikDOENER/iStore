@@ -3,4 +3,117 @@
    uuid = "8269584C-EE34-4344-90F7-CF7C2C71EFC5"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4225942D-AD4A-453F-B6DB-51048A4EE60F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iStore/Controller/Search/SearchCollectionViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4225942D-AD4A-453F-B6DB-51048A4EE60F - bc3f5ae30490df78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;Swift.Array&lt;iStore.AppSearch&gt;, Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in iStore.SearchCollectionViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "iStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tarik.macos/Desktop/LBTA+/2.%20iStore/iStore/iStore/Controller/Search/SearchCollectionViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74"
+                  offsetFromSymbolStart = "164">
+               </Location>
+               <Location
+                  uuid = "4225942D-AD4A-453F-B6DB-51048A4EE60F - bc3f5ae30490df78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;Swift.Array&lt;iStore.AppSearch&gt;, Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in iStore.SearchCollectionViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "iStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tarik.macos/Desktop/LBTA+/2.%20iStore/iStore/iStore/Controller/Search/SearchCollectionViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "4225942D-AD4A-453F-B6DB-51048A4EE60F - 5c91f9201fe76e61"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;iStore.AppSearchResult, Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in iStore.SearchCollectionViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "iStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tarik.macos/Desktop/LBTA+/2.%20iStore/iStore/iStore/Controller/Search/SearchCollectionViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AC928BCC-04DF-46A7-A2E2-10D1EAF150B1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iStore/Controller/Search/SearchCollectionViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AC928BCC-04DF-46A7-A2E2-10D1EAF150B1 - 4cc974fcf0aebca0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Swift.Array&lt;iStore.AppSearch&gt;, Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in iStore.SearchCollectionViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "iStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tarik.macos/Desktop/LBTA+/2.%20iStore/iStore/iStore/Controller/Search/SearchCollectionViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "1032">
+               </Location>
+               <Location
+                  uuid = "AC928BCC-04DF-46A7-A2E2-10D1EAF150B1 - 7dba50971c7b9138"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;iStore.AppSearchResult, Swift.Error&gt;) -&gt; () in closure #1 @Sendable (__C.NSTimer) -&gt; () in iStore.SearchCollectionViewController.searchBar(_: __C.UISearchBar, textDidChange: Swift.String) -&gt; ()"
+                  moduleName = "iStore"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tarik.macos/Desktop/LBTA+/2.%20iStore/iStore/iStore/Controller/Search/SearchCollectionViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "916">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

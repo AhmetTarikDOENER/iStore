@@ -4,18 +4,9 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {  }
     
-    func fetchApps(searchTerm: String, completion: @escaping (Result<[AppSearch], Error>) -> Void) {
+    func fetchApps(searchTerm: String, completion: @escaping (Result<AppSearchResult, Error>) -> Void) {
         let urlString = "https://itunes.apple.com/search?term=\(searchTerm)&entity=software"
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data, error == nil else { return }
-            do {
-                let searhcResult = try JSONDecoder().decode(AppSearchResult.self, from: data)
-                completion(.success(searhcResult.results))
-            } catch {
-                print(error.localizedDescription)
-            }
-        }.resume()
+        fetch(urlString: urlString, completion: completion)
     }
     
     func fetchTopFreeAppsForRows(completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
@@ -28,27 +19,22 @@ final class NetworkManager {
         self.fetchAppGroup(urlString: urlString, completion: completion)
     }
     
-    func fetchAppGroup(urlString: String, completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
-        guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data, error == nil else { return }
-            do {
-                let appRows = try JSONDecoder().decode(AppRowResults.self, from: data)
-                completion(.success(appRows))
-            } catch {
-                print(error.localizedDescription)
-            }
-        }.resume()
-    }
-    
     func fetchHeaderSocialApps(completion: @escaping (Result<[HeaderApps]?, Error>) -> Void) {
         let urlString = "https://api.letsbuildthatapp.com/appstore/social"
+        fetch(urlString: urlString, completion: completion)
+    }
+    
+    func fetchAppGroup(urlString: String, completion: @escaping (Result<AppRowResults?, Error>) -> Void) {
+        fetch(urlString: urlString, completion: completion)
+    }
+
+    func fetch<T: Decodable>(urlString: String, completion: @escaping (Result<T, Error>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data, error == nil else { return }
             do {
-                let headerApps = try JSONDecoder().decode([HeaderApps].self, from: data)
-                completion(.success(headerApps))
+                let apps = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(apps))
             } catch {
                 print(error.localizedDescription)
             }

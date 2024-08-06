@@ -27,7 +27,7 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
     private func fetchData() {
         var group1: AppRowResults?
         var group2: AppRowResults?
-        var group3: HeaderApps?
+        var group3: [HeaderApps]?
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         NetworkManager.shared.fetchTopFreeAppsForRows { results in
@@ -56,7 +56,7 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
             dispatchGroup.leave()
             switch results {
             case .success(let headerApps):
-                self.headerApps = headerApps ?? []
+                group3 = headerApps
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -66,7 +66,7 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
             self.indicatorView.stopAnimating()
             if let group = group1 { self.groups.append(group) }
             if let group = group2 { self.groups.append(group) }
-            if let headerGroup = group3 { self.headerApps.append(headerGroup) }
+            if let headerGroup = group3 { self.headerApps.append(contentsOf: headerGroup) }
             self.collectionView.reloadData()
         }
     }

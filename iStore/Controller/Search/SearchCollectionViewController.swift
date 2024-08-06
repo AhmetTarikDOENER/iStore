@@ -70,11 +70,11 @@ extension SearchCollectionViewController: UISearchBarDelegate {
                 switch results {
                 case .success(let apps):
                     DispatchQueue.main.async {
-                        self.apps = apps
+                        self.apps = apps.results
                         self.collectionView.reloadData()
                     }
                 case .failure(let error):
-                    ()
+                    print(error)
                 }
             }
             
