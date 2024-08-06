@@ -1,16 +1,28 @@
 import UIKit
 
-final class AppsCollectionViewController: RootListCollectionViewController {
+final class AppsMainCollectionViewController: RootListCollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemBackground
         collectionView.register(AppsGroupCollectionViewCell.self, forCellWithReuseIdentifier: AppsGroupCollectionViewCell.identifier)
         collectionView.register(AppsHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppsHeaderReusableView.identifier)
+        fetchData()
+    }
+    
+    private func fetchData() {
+        NetworkManager.shared.fetchAppsForRows { results in
+            switch results {
+            case .success(let appRowResults):
+                print(appRowResults.feed.results)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
-extension AppsCollectionViewController {
+extension AppsMainCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         5
     }
@@ -22,7 +34,7 @@ extension AppsCollectionViewController {
     }
 }
 //  MARK: - UICollectionViewDelegateFlowLayout:
-extension AppsCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension AppsMainCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.frame.width, height: 300)
     }

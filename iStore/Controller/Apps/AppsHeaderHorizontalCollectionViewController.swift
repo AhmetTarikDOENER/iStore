@@ -9,7 +9,6 @@ final class AppsHeaderHorizontalCollectionViewController: RootListCollectionView
     }
     
     private func configureHierarchy() {
-        collectionView.backgroundColor = .systemYellow
         if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }

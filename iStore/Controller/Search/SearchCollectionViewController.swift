@@ -3,7 +3,7 @@ import SDWebImage
 
 final class SearchCollectionViewController: RootListCollectionViewController {
     
-    private var apps = [App]()
+    private var apps = [AppSearch]()
     private var timer: Timer?
     private let searchController = UISearchController(searchResultsController: nil)
     

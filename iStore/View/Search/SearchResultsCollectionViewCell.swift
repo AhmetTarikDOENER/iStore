@@ -4,7 +4,7 @@ final class SearchResultsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "SearchResultsCollectionViewCell"
     
-    var appResult: App! {
+    var appResult: AppSearch! {
         didSet {
             nameLabel.text = appResult.trackName
             categoryLabel.text = appResult.primaryGenreName
