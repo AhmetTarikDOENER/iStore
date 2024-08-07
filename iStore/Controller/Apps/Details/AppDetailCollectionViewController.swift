@@ -28,12 +28,13 @@ final class AppDetailCollectionViewController: RootListCollectionViewController 
         collectionView.backgroundColor = .systemBackground
         collectionView.register(AppDetailCollectionViewCell.self, forCellWithReuseIdentifier: AppDetailCollectionViewCell.identifier)
         collectionView.register(PreviewCollectionViewCell.self, forCellWithReuseIdentifier: PreviewCollectionViewCell.identifier)
+        collectionView.register(ReviewCollectionViewCell.self, forCellWithReuseIdentifier: ReviewCollectionViewCell.identifier)
     }
 }
 //  MARK: - UICollectionViewDelegateFlowLayout:
 extension AppDetailCollectionViewController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        2
+        3
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -41,23 +42,28 @@ extension AppDetailCollectionViewController: UICollectionViewDelegateFlowLayout 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppDetailCollectionViewCell.identifier, for: indexPath) as! AppDetailCollectionViewCell
             cell.app = app
             return cell
-        } else {
+        } else if indexPath.item == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCollectionViewCell.identifier, for: indexPath) as! PreviewCollectionViewCell
-            cell.horizontalController.app = app
+            cell.horizontalPreviewController.app = app
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionViewCell.identifier, for: indexPath) as! ReviewCollectionViewCell
+            
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 250
         if indexPath.item == 0 {
             let tempCell = AppDetailCollectionViewCell(frame: .init(x: 0, y: 0, width: collectionView.frame.width, height: 1000))
             tempCell.app = app
             tempCell.layoutIfNeeded()
             let estimatedSize = tempCell.systemLayoutSizeFitting(.init(width: collectionView.frame.width, height: 1000))
-            
-            return .init(width: collectionView.frame.width, height: estimatedSize.height)
-        } else {
-            return .init(width: collectionView.frame.width, height: 475)
+            height = estimatedSize.height
+        } else if indexPath.item == 1 {
+            height = 475
         }
+        return .init(width: collectionView.frame.width, height: height)
     }
 }
