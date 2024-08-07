@@ -1,6 +1,7 @@
 import UIKit
 
 class RootListCollectionViewController: UICollectionViewController {
+    
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }

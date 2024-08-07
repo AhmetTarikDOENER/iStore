@@ -1,16 +1,16 @@
 import UIKit
 import SDWebImage
 
-final class AppsHorizontalCollectionViewController: RootListCollectionViewController {
+final class AppsHorizontalCollectionViewController: HorizontalSnappingController {
     
     var horizontalTopFreeApps: AppRowResults?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(AppRowCollectionViewCell.self, forCellWithReuseIdentifier: AppRowCollectionViewCell.identifier)
-        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
+        collectionView.register(
+            AppRowCollectionViewCell.self,
+            forCellWithReuseIdentifier: AppRowCollectionViewCell.identifier
+        )
     }
 }
 
