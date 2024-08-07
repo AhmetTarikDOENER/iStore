@@ -58,10 +58,3 @@ final class AppDetailCollectionViewCell: UICollectionViewCell {
         stackView.fillSuperView(.init(top: 20, left: 20, bottom: 20, right: 20))
     }
 }
-
-extension UIStackView {
-    convenience init(arrangedSubviews: [UIView], customSpacing: CGFloat = 0) {
-        self.init(arrangedSubviews: arrangedSubviews)
-        self.spacing = customSpacing
-    }
-}
