@@ -1,19 +1,12 @@
 import UIKit
 
-final class AppsHeaderHorizontalCollectionViewController: RootListCollectionViewController {
+final class AppsHeaderHorizontalCollectionViewController: HorizontalCollectionViewSnappingController {
     
     var headerApps = [HeaderApps]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(AppsHeaderReusableCollectionViewCell.self, forCellWithReuseIdentifier: AppsHeaderReusableCollectionViewCell.identifier)
-        configureHierarchy()
-    }
-    
-    private func configureHierarchy() {
-        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
     }
 }
 

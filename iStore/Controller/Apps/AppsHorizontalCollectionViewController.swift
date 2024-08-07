@@ -1,9 +1,10 @@
 import UIKit
 import SDWebImage
 
-final class AppsHorizontalCollectionViewController: HorizontalSnappingController {
+final class AppsHorizontalCollectionViewController: HorizontalCollectionViewSnappingController {
     
     var horizontalTopFreeApps: AppRowResults?
+    var didSelectHandler: ((FeedResult) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,11 @@ extension AppsHorizontalCollectionViewController: UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height: CGFloat = (collectionView.frame.height - 24 - 20) / 3
         return .init(width: collectionView.frame.width - 60, height: height)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedApp = horizontalTopFreeApps?.feed.results[indexPath.item] else { return }
+        didSelectHandler?(selectedApp)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

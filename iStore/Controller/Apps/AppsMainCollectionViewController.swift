@@ -16,12 +16,16 @@ final class AppsMainCollectionViewController: RootListCollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(indicatorView)
-        indicatorView.fillSuperView()
-        collectionView.backgroundColor = .systemBackground
+        configureHierarchy()
         collectionView.register(AppsGroupCollectionViewCell.self, forCellWithReuseIdentifier: AppsGroupCollectionViewCell.identifier)
         collectionView.register(AppsHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppsHeaderReusableView.identifier)
         fetchData()
+    }
+    
+    private func configureHierarchy() {
+        view.addSubview(indicatorView)
+        indicatorView.fillSuperView()
+        collectionView.backgroundColor = .systemBackground
     }
     
     private func fetchData() {
@@ -83,6 +87,11 @@ extension AppsMainCollectionViewController {
         cell.titleLabel.text = appGroup.feed.title
         cell.horizontalCollectionViewController.horizontalTopFreeApps = appGroup
         cell.horizontalCollectionViewController.collectionView.reloadData()
+        cell.horizontalCollectionViewController.didSelectHandler = { [weak self] selectedApp in
+            let detailViewController = AppDetailCollectionViewController()
+            detailViewController.navigationItem.title = selectedApp.name
+            self?.navigationController?.pushViewController(detailViewController, animated: true)
+        }
         return cell
     }
 }

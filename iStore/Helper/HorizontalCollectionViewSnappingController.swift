@@ -1,6 +1,6 @@
 import UIKit
 
-class HorizontalSnappingController: UICollectionViewController {
+class HorizontalCollectionViewSnappingController: UICollectionViewController {
     
     init() {
         let layout = SnappingLayout()
