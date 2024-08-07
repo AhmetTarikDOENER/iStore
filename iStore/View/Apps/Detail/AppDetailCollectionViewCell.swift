@@ -4,6 +4,16 @@ final class AppDetailCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AppDetailCollectionViewCell"
     
+    var app: AppSearch? {
+        didSet {
+            nameLabel.text = app?.trackName
+            releaseNotesLabel.text = app?.releaseNotes
+            appIconImageView.sd_setImage(with: URL(string: app?.artworkUrl100 ?? ""))
+            releaseNotesLabel.text = app?.releaseNotes
+            priceButton.setTitle(app?.formattedPrice, for: .normal)
+        }
+    }
+    
     let appIconImageView = UIImageView(cornerRadius: 16)
     let nameLabel = UILabel(text: "APP NAME", font: .boldSystemFont(ofSize: 22), numberOfLines: 2)
     let priceButton = UIButton(title: "$4.99")
@@ -20,10 +30,9 @@ final class AppDetailCollectionViewCell: UICollectionViewCell {
     }
 
     private func configureHiearchy() {
-        appIconImageView.backgroundColor = .systemRed
         appIconImageView.widthAnchor.constraint(equalToConstant: 140).isActive = true
         appIconImageView.heightAnchor.constraint(equalToConstant: 140).isActive = true
-        priceButton.backgroundColor = #colorLiteral(red: 0.2039215686, green: 0.4705882353, blue: 0.9647058824, alpha: 1)
+        priceButton.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.4352941176, blue: 0.9607843137, alpha: 1)
         priceButton.heightAnchor.constraint(equalToConstant: 26).isActive = true
         priceButton.layer.cornerRadius = 13
         priceButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
