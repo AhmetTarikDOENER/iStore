@@ -5,6 +5,7 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     static let identifier = "TodayCollectionViewCell"
     
     let imageView = UIImageView(image: #imageLiteral(resourceName: "garden"))
+    var topConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

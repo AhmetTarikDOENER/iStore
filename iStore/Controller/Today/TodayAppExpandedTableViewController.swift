@@ -2,10 +2,17 @@ import UIKit
 
 final class TodayAppExpandedTableViewController: UITableViewController {
     
+    var dismissHandler: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         tableView.separatorStyle = .none
+    }
+    
+    @objc private func handleDismiss(button: UIButton) {
+        button.isHidden = true
+        dismissHandler?()
     }
 }
 
@@ -17,7 +24,9 @@ extension TodayAppExpandedTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.item == 0 {
-            return TodayAppExpandedHeaderCell()
+            let headerCell = TodayAppExpandedHeaderCell()
+            headerCell.closeButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+            return headerCell
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()
         return cell
@@ -29,5 +38,4 @@ extension TodayAppExpandedTableViewController {
         }
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
-    
 }
