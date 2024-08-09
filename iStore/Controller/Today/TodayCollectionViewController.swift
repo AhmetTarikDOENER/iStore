@@ -2,6 +2,8 @@ import UIKit
 
 final class TodayCollectionViewController: RootListCollectionViewController {
     
+    var startingFrame: CGRect?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
@@ -38,7 +40,36 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         .init(top: 30, left: 0, bottom: 30, right: 0)
     }
     
+    @objc private func didHandleRemove(gesture: UITapGestureRecognizer) {
+        UIView.animate(
+            withDuration: 0.7,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseOut, animations: {
+                gesture.view?.frame = self.startingFrame ?? .zero
+            }) { _ in
+                gesture.view?.removeFromSuperview()
+            }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let redVC = UIView()
+        redVC.backgroundColor = .red
+        redVC.layer.cornerRadius = 12
+        redVC.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
+        view.addSubview(redVC)
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
+        self.startingFrame = startingFrame
+        redVC.frame = startingFrame
+        UIView.animate(
+            withDuration: 0.7,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseOut) {
+                redVC.frame = self.view.frame
+            }
     }
 }
