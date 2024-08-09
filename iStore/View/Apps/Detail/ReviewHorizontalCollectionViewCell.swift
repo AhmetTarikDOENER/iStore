@@ -6,7 +6,22 @@ final class ReviewHorizontalCollectionViewCell: UICollectionViewCell {
     let titleLabel = UILabel(text: "Review Title", font: .boldSystemFont(ofSize: 16))
     let authorLabel = UILabel(text: "Author", font: .systemFont(ofSize: 16))
     let starsLabel = UILabel(text: "Stars", font: .systemFont(ofSize: 13))
-    let bodyLabel = UILabel(text: "Review body goes here\nReview body goes hereaiudadhaldsjlakjdslkasdlkasdlkajdbla", font: .systemFont(ofSize: 14), numberOfLines: 0)
+    let bodyLabel = UILabel(text: "Review body goes here\nReview body goes hereaiudadhaldsjlakjdslkasdlkasdlkajdbla", font: .systemFont(ofSize: 16), numberOfLines: 0)
+    
+    let starsStackView: UIStackView = {
+        var arrangedSubviews = [UIView]()
+        (0..<5).forEach { _ in
+            let imageView = UIImageView(image: #imageLiteral(resourceName: "star"))
+            imageView.contentMode = .scaleAspectFit
+            imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+            imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            arrangedSubviews.append(imageView)
+        }
+        arrangedSubviews.append(UIView())
+        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
+        
+        return stackView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,7 +33,7 @@ final class ReviewHorizontalCollectionViewCell: UICollectionViewCell {
                 UIStackView(arrangedSubviews: [
                     titleLabel, authorLabel
                 ], customSpacing: 8),
-                starsLabel,
+                starsStackView,
                 bodyLabel
             ],
             spacing: 12
@@ -26,7 +41,11 @@ final class ReviewHorizontalCollectionViewCell: UICollectionViewCell {
         authorLabel.textAlignment = .right
         titleLabel.setContentCompressionResistancePriority(.init(0), for: .horizontal)
         addSubviews(stackView)
-        stackView.fillSuperView(.init(top: 20, left: 12, bottom: 20, right: 12))
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+        ])
     }
     
     required init?(coder: NSCoder) {
