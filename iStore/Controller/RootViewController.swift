@@ -20,8 +20,8 @@ final class RootViewController: UITabBarController {
     private func configureHierarchy() {
         view.backgroundColor = .systemBackground
         viewControllers = [
+            createNavigationController(viewController: TodayCollectionViewController(), title: "Today", imageName: "today_icon"),
             createNavigationController(viewController: AppsMainCollectionViewController(), title: "Apps", imageName: "apps"),
-            createNavigationController(viewController: UIViewController(), title: "Today", imageName: "today_icon"),
             createNavigationController(
                 viewController: SearchCollectionViewController(),
                 title: "Search",
