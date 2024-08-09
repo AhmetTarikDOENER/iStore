@@ -56,9 +56,7 @@ extension SearchCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let appDetailController = AppDetailCollectionViewController()
-        let id = apps[indexPath.item].trackId
-        appDetailController.id = String(id)
+        let appDetailController = AppDetailCollectionViewController(id: String(apps[indexPath.item].trackId))
         navigationController?.pushViewController(appDetailController, animated: true)
     }
 }

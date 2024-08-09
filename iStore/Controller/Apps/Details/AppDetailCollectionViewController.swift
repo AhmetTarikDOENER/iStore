@@ -5,36 +5,17 @@ final class AppDetailCollectionViewController: RootListCollectionViewController 
     var app: AppSearch?
     var reviews: Reviews?
     
-    var id: String? {
-        didSet {
-            let urlString = "https://itunes.apple.com/lookup?id=\(id ?? "")"
-            NetworkManager.shared.fetch(urlString: urlString) { (results: Result<AppSearchResult, Error>) in
-                switch results {
-                case .success(let appResult):
-                    let app = appResult.results.first
-                    self.app = app
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-            let reviewsURL = "https://itunes.apple.com/rss/customerreviews/page=1/id=\(id ?? "")/sortby=mostrecent/json?l=en&cc=us"
-            NetworkManager.shared.fetch(urlString: reviewsURL) { (results: Result<Reviews?, Error>) in
-                switch results {
-                case .success(let reviews):
-                    self.reviews = reviews
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
+    private let id: String
+    
+    init(id: String) {
+        self.id = id
+        super.init()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
@@ -42,6 +23,35 @@ final class AppDetailCollectionViewController: RootListCollectionViewController 
         collectionView.register(AppDetailCollectionViewCell.self, forCellWithReuseIdentifier: AppDetailCollectionViewCell.identifier)
         collectionView.register(PreviewCollectionViewCell.self, forCellWithReuseIdentifier: PreviewCollectionViewCell.identifier)
         collectionView.register(ReviewCollectionViewCell.self, forCellWithReuseIdentifier: ReviewCollectionViewCell.identifier)
+        fetchData()
+    }
+    
+    private func fetchData() {
+        let urlString = "https://itunes.apple.com/lookup?id=\(id)"
+        NetworkManager.shared.fetch(urlString: urlString) { (results: Result<AppSearchResult, Error>) in
+            switch results {
+            case .success(let appResult):
+                let app = appResult.results.first
+                self.app = app
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        let reviewsURL = "https://itunes.apple.com/rss/customerreviews/page=1/id=\(id)/sortby=mostrecent/json?l=en&cc=us"
+        NetworkManager.shared.fetch(urlString: reviewsURL) { (results: Result<Reviews?, Error>) in
+            switch results {
+            case .success(let reviews):
+                self.reviews = reviews
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 //  MARK: - UICollectionViewDelegateFlowLayout:

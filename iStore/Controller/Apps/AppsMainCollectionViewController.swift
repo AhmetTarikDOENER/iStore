@@ -88,8 +88,7 @@ extension AppsMainCollectionViewController {
         cell.horizontalCollectionViewController.horizontalTopFreeApps = appGroup
         cell.horizontalCollectionViewController.collectionView.reloadData()
         cell.horizontalCollectionViewController.didSelectHandler = { [weak self] selectedApp in
-            let detailViewController = AppDetailCollectionViewController()
-            detailViewController.id = selectedApp.id
+            let detailViewController = AppDetailCollectionViewController(id: selectedApp.id)
             detailViewController.navigationItem.title = selectedApp.name
             self?.navigationController?.pushViewController(detailViewController, animated: true)
         }
