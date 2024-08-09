@@ -3,7 +3,7 @@ import UIKit
 final class TodayCollectionViewController: RootListCollectionViewController {
     
     var startingFrame: CGRect?
-    var expandedViewController: UIViewController!
+    var expandedViewController: TodayAppExpandedTableViewController!
     var topConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
     var widthConstraint: NSLayoutConstraint?
@@ -52,6 +52,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             usingSpringWithDamping: 0.7,
             initialSpringVelocity: 0.7,
             options: .curveEaseOut, animations: {
+                self.expandedViewController.tableView.contentOffset = .zero
                 guard let startingFrame = self.startingFrame else { return }
                 self.topConstraint?.constant = startingFrame.origin.y
                 self.leadingConstraint?.constant = startingFrame.origin.x
