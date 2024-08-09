@@ -3,6 +3,7 @@ import UIKit
 final class AppDetailCollectionViewController: RootListCollectionViewController {
 
     var app: AppSearch?
+    var reviews: Reviews?
     
     var id: String? {
         didSet {
@@ -23,11 +24,12 @@ final class AppDetailCollectionViewController: RootListCollectionViewController 
             NetworkManager.shared.fetch(urlString: reviewsURL) { (results: Result<Reviews?, Error>) in
                 switch results {
                 case .success(let reviews):
-                    reviews?.feed.entry.forEach({ entry in
-                        print(entry.author, entry.content, entry.title)
-                    })
+                    self.reviews = reviews
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
                 case .failure(let error):
-                    ()
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -59,7 +61,7 @@ extension AppDetailCollectionViewController: UICollectionViewDelegateFlowLayout 
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCollectionViewCell.identifier, for: indexPath) as! ReviewCollectionViewCell
-            
+            cell.horizontalReviewController.reviews = reviews
             return cell
         }
     }

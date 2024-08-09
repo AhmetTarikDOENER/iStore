@@ -2,6 +2,8 @@ import UIKit
 
 final class ReviewHorizontalCollectionViewController: HorizontalCollectionViewSnappingController {
     
+    var reviews: Reviews?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.showsHorizontalScrollIndicator = false
@@ -11,11 +13,15 @@ final class ReviewHorizontalCollectionViewController: HorizontalCollectionViewSn
 
 extension ReviewHorizontalCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        reviews?.feed.entry.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewHorizontalCollectionViewCell.identifier, for: indexPath) as! ReviewHorizontalCollectionViewCell
+        let entry = reviews?.feed.entry[indexPath.item]
+        cell.authorLabel.text = entry?.author.name.label
+        cell.titleLabel.text = entry?.title.label
+        cell.bodyLabel.text = entry?.content.label
         
         return cell
     }
