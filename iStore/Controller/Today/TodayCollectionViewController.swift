@@ -4,6 +4,10 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     
     var startingFrame: CGRect?
     var expandedViewController: UIViewController!
+    var topConstraint: NSLayoutConstraint?
+    var leadingConstraint: NSLayoutConstraint?
+    var widthConstraint: NSLayoutConstraint?
+    var heightConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +52,11 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             usingSpringWithDamping: 0.7,
             initialSpringVelocity: 0.7,
             options: .curveEaseOut, animations: {
-                gesture.view?.frame = self.startingFrame ?? .zero
+                guard let startingFrame = self.startingFrame else { return }
+                self.topConstraint?.constant = startingFrame.origin.y
+                self.leadingConstraint?.constant = startingFrame.origin.x
+                self.widthConstraint?.constant = startingFrame.width
+                self.heightConstraint?.constant = startingFrame.height
                 if let tabBarFrame = self.tabBarController?.tabBar.frame {
                     self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                 }
@@ -69,14 +77,24 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
-        expandedView.frame = startingFrame
+        expandedView.translatesAutoresizingMaskIntoConstraints = false
+        topConstraint = expandedView.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
+        leadingConstraint = expandedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
+        widthConstraint = expandedView.widthAnchor.constraint(equalToConstant: startingFrame.width)
+        heightConstraint = expandedView.heightAnchor.constraint(equalToConstant: startingFrame.height)
+        [topConstraint, leadingConstraint, widthConstraint, heightConstraint].forEach{ $0?.isActive = true }
+        self.view.layoutIfNeeded()
         UIView.animate(
             withDuration: 0.7,
             delay: 0,
             usingSpringWithDamping: 0.7,
             initialSpringVelocity: 0.5,
             options: .curveEaseOut) {
-                expandedView.frame = self.view.frame
+                self.topConstraint?.constant = 0
+                self.leadingConstraint?.constant = 0
+                self.widthConstraint?.constant = self.view.frame.width
+                self.heightConstraint?.constant = self.view.frame.height
+                self.view.layoutIfNeeded()
                 self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
             }
     }
