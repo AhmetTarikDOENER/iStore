@@ -16,6 +16,17 @@ final class AppDetailCollectionViewController: RootListCollectionViewController 
                         self.collectionView.reloadData()
                     }
                 case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            let reviewsURL = "https://itunes.apple.com/rss/customerreviews/page=1/id=\(id ?? "")/sortby=mostrecent/json?l=en&cc=us"
+            NetworkManager.shared.fetch(urlString: reviewsURL) { (results: Result<Reviews?, Error>) in
+                switch results {
+                case .success(let reviews):
+                    reviews?.feed.entry.forEach({ entry in
+                        print(entry.author, entry.content, entry.title)
+                    })
+                case .failure(let error):
                     ()
                 }
             }
