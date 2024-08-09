@@ -45,31 +45,34 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             withDuration: 0.7,
             delay: 0,
             usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.5,
+            initialSpringVelocity: 0.7,
             options: .curveEaseOut, animations: {
                 gesture.view?.frame = self.startingFrame ?? .zero
+                self.tabBarController?.tabBar.isHidden = false
             }) { _ in
                 gesture.view?.removeFromSuperview()
             }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let redVC = UIView()
-        redVC.backgroundColor = .red
-        redVC.layer.cornerRadius = 12
-        redVC.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
-        view.addSubview(redVC)
+        let expandedViewController = TodayAppExpandedTableViewController()
+        guard let expandedView = expandedViewController.view else { return }
+        expandedView.layer.cornerRadius = 12
+        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
+        view.addSubview(expandedView)
+        addChild(expandedViewController)
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
-        redVC.frame = startingFrame
+        expandedView.frame = startingFrame
         UIView.animate(
             withDuration: 0.7,
             delay: 0,
             usingSpringWithDamping: 0.7,
             initialSpringVelocity: 0.5,
             options: .curveEaseOut) {
-                redVC.frame = self.view.frame
+                expandedView.frame = self.view.frame
+                self.tabBarController?.tabBar.isHidden = true
             }
     }
 }
