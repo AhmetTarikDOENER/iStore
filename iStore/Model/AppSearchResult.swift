@@ -6,6 +6,7 @@ struct AppSearchResult: Decodable {
 }
 
 struct AppSearch: Decodable {
+    let trackId: Int
     let trackName: String
     let primaryGenreName: String
     let averageUserRating: Float?

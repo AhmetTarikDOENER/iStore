@@ -6,7 +6,7 @@ final class ReviewHorizontalCollectionViewCell: UICollectionViewCell {
     let titleLabel = UILabel(text: "Review Title", font: .boldSystemFont(ofSize: 16))
     let authorLabel = UILabel(text: "Author", font: .systemFont(ofSize: 16))
     let starsLabel = UILabel(text: "Stars", font: .systemFont(ofSize: 13))
-    let bodyLabel = UILabel(text: "Review body goes here\nReview body goes hereaiudadhaldsjlakjdslkasdlkasdlkajdbla", font: .systemFont(ofSize: 16), numberOfLines: 0)
+    let bodyLabel = UILabel(text: "Review body goes here\nReview body goes hereaiudadhaldsjlakjdslkasdlkasdlkajdbla", font: .systemFont(ofSize: 16), numberOfLines: 8)
     
     let starsStackView: UIStackView = {
         var arrangedSubviews = [UIView]()
