@@ -4,7 +4,20 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "TodayCollectionViewCell"
     
+    var todayItem: TodayCellItem! {
+        didSet {
+            categoryLabel.text = todayItem.category
+            titleLabel.text = todayItem.title
+            imageView.image = todayItem.image
+            descriptionLabel.text = todayItem.description
+        }
+    }
+    
     let imageView = UIImageView(image: #imageLiteral(resourceName: "garden"))
+    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
+    let titleLabel = UILabel(text: "Utilizing your time", font: .boldSystemFont(ofSize: 28))
+    let descriptionLabel = UILabel(text: "All the tools and apps you need to intelegently orginize your life the right away", font: .boldSystemFont(ofSize: 16), numberOfLines: 3)
+    
     var topConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
@@ -20,14 +33,25 @@ final class TodayCollectionViewCell: UICollectionViewCell {
         backgroundColor = .systemGray6
         layer.cornerRadius = 12
         clipsToBounds = true
-        contentView.addSubview(imageView)
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        let imageContainerView = UIView()
+        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        imageContainerView.addSubview(imageView)
+        let stackView = VerticalStackView(
+            arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel],
+            spacing: 8
+        )
+        contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 250),
-            imageView.heightAnchor.constraint(equalToConstant: 250),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            imageView.centerXAnchor.constraint(equalTo: imageContainerView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: imageContainerView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 200),
+            imageView.heightAnchor.constraint(equalToConstant: 200),
         ])
     }
 }

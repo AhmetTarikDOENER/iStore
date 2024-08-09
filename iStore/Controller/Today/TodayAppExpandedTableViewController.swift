@@ -3,6 +3,7 @@ import UIKit
 final class TodayAppExpandedTableViewController: UITableViewController {
     
     var dismissHandler: (() -> Void)?
+    var todayItem: TodayCellItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,7 @@ extension TodayAppExpandedTableViewController {
         if indexPath.item == 0 {
             let headerCell = TodayAppExpandedHeaderCell()
             headerCell.closeButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+            headerCell.todayCell.todayItem = todayItem
             return headerCell
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()

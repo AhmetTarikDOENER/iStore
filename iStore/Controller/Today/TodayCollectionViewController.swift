@@ -9,6 +9,12 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
+    let items: [TodayCellItem] = [
+        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .systemBackground),
+        .init(category: "HOLIDAYS", title: "Travel on a budget", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "holiday"), backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1)),
+        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .systemBackground)
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
@@ -47,12 +53,12 @@ final class TodayCollectionViewController: RootListCollectionViewController {
 extension TodayCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        items.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCollectionViewCell.identifier, for: indexPath)
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCollectionViewCell.identifier, for: indexPath) as! TodayCollectionViewCell
+        cell.todayItem = items[indexPath.item]
         return cell
     }
 }
@@ -96,6 +102,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let expandedViewController = TodayAppExpandedTableViewController()
+        expandedViewController.todayItem = items[indexPath.item]
         expandedViewController.dismissHandler = {
             self.handleRemoveExpandedView()
         }
