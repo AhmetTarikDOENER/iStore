@@ -3,6 +3,7 @@ import UIKit
 final class TodayCollectionViewController: RootListCollectionViewController {
     
     var startingFrame: CGRect?
+    var expandedViewController: UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +49,12 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             initialSpringVelocity: 0.7,
             options: .curveEaseOut, animations: {
                 gesture.view?.frame = self.startingFrame ?? .zero
-                self.tabBarController?.tabBar.isHidden = false
+                if let tabBarFrame = self.tabBarController?.tabBar.frame {
+                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
+                }
             }) { _ in
                 gesture.view?.removeFromSuperview()
+                self.expandedViewController.removeFromParent()
             }
     }
     
@@ -61,6 +65,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
         view.addSubview(expandedView)
         addChild(expandedViewController)
+        self.expandedViewController = expandedViewController
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
@@ -72,7 +77,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             initialSpringVelocity: 0.5,
             options: .curveEaseOut) {
                 expandedView.frame = self.view.frame
-                self.tabBarController?.tabBar.isHidden = true
+                self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
             }
     }
 }
