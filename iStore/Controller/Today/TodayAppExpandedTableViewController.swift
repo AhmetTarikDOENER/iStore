@@ -1,7 +1,7 @@
 import UIKit
 
 final class TodayAppExpandedTableViewController: UITableViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -17,15 +17,7 @@ extension TodayAppExpandedTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.item == 0 {
-            let cell = UITableViewCell()
-            let expandedCell = TodayCollectionViewCell()
-            expandedCell.translatesAutoresizingMaskIntoConstraints = false
-            cell.addSubview(expandedCell)
-            expandedCell.centerXAnchor.constraint(equalTo: cell.centerXAnchor).isActive = true
-            expandedCell.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
-            expandedCell.widthAnchor.constraint(equalToConstant: 250).isActive = true
-            expandedCell.heightAnchor.constraint(equalToConstant: 250).isActive = true
-            return cell
+            return TodayAppExpandedHeaderCell()
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()
         return cell
