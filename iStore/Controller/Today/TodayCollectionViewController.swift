@@ -121,7 +121,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         view.addSubview(expandedView)
         addChild(expandedViewController)
         self.expandedViewController = expandedViewController
-        self.collectionView.isUserInteractionEnabled = false
+//        self.collectionView.isUserInteractionEnabled = false
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame

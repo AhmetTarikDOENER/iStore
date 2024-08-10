@@ -12,7 +12,7 @@ final class TodayAppMultipleCell: TodayBaseCollectionViewCell {
     
     let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
     let titleLabel = UILabel(text: "Utilizing your time", font: .boldSystemFont(ofSize: 28), numberOfLines: 2)
-    let multipleAppsController = UIViewController()
+    let multipleAppsController = TodayAppMultipleCollectionViewController()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,7 +26,6 @@ final class TodayAppMultipleCell: TodayBaseCollectionViewCell {
     private func configureHierarchy() {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 12
-        multipleAppsController.view.backgroundColor = .red
         let stackView = VerticalStackView(
             arrangedSubviews: [
                 categoryLabel,
