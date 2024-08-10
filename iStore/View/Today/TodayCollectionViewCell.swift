@@ -1,11 +1,11 @@
 import UIKit
 
-final class TodayCollectionViewCell: UICollectionViewCell {
+final class TodayCollectionViewCell: TodayBaseCollectionViewCell {
     
     static let identifier = "TodayCollectionViewCell"
     
     var topConstraint: NSLayoutConstraint?
-    var todayItem: TodayCellItem! {
+    override var todayItem: TodayCellItem! {
         didSet {
             categoryLabel.text = todayItem.category
             titleLabel.text = todayItem.title

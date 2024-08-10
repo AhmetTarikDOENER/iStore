@@ -1,9 +1,9 @@
 import UIKit
 
-final class TodayAppMultipleCell: UICollectionViewCell {
+final class TodayAppMultipleCell: TodayBaseCollectionViewCell {
     
     static let identifier = "TodayAppMultipleCell"
-    var todayItem: TodayCellItem! {
+    override var todayItem: TodayCellItem! {
         didSet {
             categoryLabel.text = todayItem.category
             titleLabel.text = todayItem.title

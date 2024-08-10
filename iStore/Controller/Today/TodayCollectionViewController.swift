@@ -61,12 +61,9 @@ extension TodayCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellType = items[indexPath.item].cellType.rawValue
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType, for: indexPath)
-        if let cell = cell as? TodayCollectionViewCell {
-            cell.todayItem = items[indexPath.item]
-        } else if let cell = cell as? TodayAppMultipleCell {
-            cell.todayItem = items[indexPath.item]
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType, for: indexPath) as! TodayBaseCollectionViewCell
+        cell.todayItem = items[indexPath.row]
+        
         return cell
     }
 }
