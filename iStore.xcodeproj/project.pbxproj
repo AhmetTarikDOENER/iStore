@@ -155,6 +155,32 @@
 			path = Apps;
 			sourceTree = "<group>";
 		};
+		457076C82C67C7D1009CB940 /* Expanded */ = {
+			isa = PBXGroup;
+			children = (
+				45B0D8382C66993F00F6ACF8 /* TodayAppExpandedDescriptionTableViewCell.swift */,
+				45B0D83A2C66AEE800F6ACF8 /* TodayAppExpandedHeaderCell.swift */,
+			);
+			path = Expanded;
+			sourceTree = "<group>";
+		};
+		457076C92C67C7DD009CB940 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				457076C22C679D9E009CB940 /* TodayBaseCollectionViewCell.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		457076CA2C67C7E8009CB940 /* Multiple Cell */ = {
+			isa = PBXGroup;
+			children = (
+				457076C02C679442009CB940 /* TodayAppMultipleCell.swift */,
+				457076C62C67BFC8009CB940 /* TodayMultipleAppCollectionViewCell.swift */,
+			);
+			path = "Multiple Cell";
+			sourceTree = "<group>";
+		};
 		45A6E1C22C63AB0B00AA6001 /* Details */ = {
 			isa = PBXGroup;
 			children = (
@@ -232,11 +258,9 @@
 			isa = PBXGroup;
 			children = (
 				45B0D8342C66853600F6ACF8 /* TodayCollectionViewCell.swift */,
-				45B0D8382C66993F00F6ACF8 /* TodayAppExpandedDescriptionTableViewCell.swift */,
-				45B0D83A2C66AEE800F6ACF8 /* TodayAppExpandedHeaderCell.swift */,
-				457076C02C679442009CB940 /* TodayAppMultipleCell.swift */,
-				457076C22C679D9E009CB940 /* TodayBaseCollectionViewCell.swift */,
-				457076C62C67BFC8009CB940 /* TodayMultipleAppCollectionViewCell.swift */,
+				457076C82C67C7D1009CB940 /* Expanded */,
+				457076CA2C67C7E8009CB940 /* Multiple Cell */,
+				457076C92C67C7DD009CB940 /* Base */,
 			);
 			path = Today;
 			sourceTree = "<group>";

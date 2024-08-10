@@ -7,6 +7,8 @@ final class TodayAppMultipleCell: TodayBaseCollectionViewCell {
         didSet {
             categoryLabel.text = todayItem.category
             titleLabel.text = todayItem.title
+            multipleAppsController.apps = todayItem.apps
+            multipleAppsController.collectionView.reloadData()
         }
     }
     

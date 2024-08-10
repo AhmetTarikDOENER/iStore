@@ -3,7 +3,6 @@ import UIKit
 final class TodayAppMultipleCollectionViewController: RootListCollectionViewController {
     
     var apps = [FeedResult]()
-    
     private let spacing: CGFloat = 20
     
     override func viewDidLoad() {
@@ -11,17 +10,6 @@ final class TodayAppMultipleCollectionViewController: RootListCollectionViewCont
         collectionView.backgroundColor = .secondarySystemBackground
         collectionView.register(TodayMultipleAppCollectionViewCell.self, forCellWithReuseIdentifier: TodayMultipleAppCollectionViewCell.identifier)
         collectionView.isScrollEnabled = false
-        NetworkManager.shared.fetchTopPaidsAppsForRows { results in
-            switch results {
-            case .success(let apps):
-                self.apps = apps?.feed.results ?? []
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
     }
 }
 

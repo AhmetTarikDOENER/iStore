@@ -2,27 +2,101 @@ import UIKit
 
 final class TodayCollectionViewController: RootListCollectionViewController {
     
+    static let cellSize: CGFloat = 500
     var startingFrame: CGRect?
     var expandedViewController: TodayAppExpandedTableViewController!
     var topConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
-    
-    static let cellSize: CGFloat = 500
-    
-    let items = [
-        TodayCellItem.init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground, cellType: .single),
-        TodayCellItem.init(category: "HOLIDAYS", title: "Travel on a budget", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "holiday"), backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1), cellType: .single),
-        TodayCellItem.init(category: "THE DAILY LIST", title: "Test drive these CarPlay apps", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground, cellType: .multiple)
-    ]
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        spinner.hidesWhenStopped = true
+        return spinner
+    }()
+
+    var items = [TodayCellItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.isNavigationBarHidden = true
-        collectionView.backgroundColor = .systemBackground
+        configureHierarchy()
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: TodayCellItem.CellType.single.rawValue)
         collectionView.register(TodayAppMultipleCell.self, forCellWithReuseIdentifier: TodayCellItem.CellType.multiple.rawValue)
+        fetchData()
+    }
+    
+    private func configureHierarchy() {
+        navigationController?.isNavigationBarHidden = true
+        collectionView.backgroundColor = .systemBackground
+        view.addSubview(activityIndicatorView)
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicatorView.widthAnchor.constraint(equalToConstant: 120),
+            activityIndicatorView.heightAnchor.constraint(equalToConstant: 120)
+        ])
+    }
+    
+    private func fetchData() {
+        let dispatchGroup = DispatchGroup()
+        var group1: AppRowResults?
+        var group2: AppRowResults?
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchTopPaidsAppsForRows { results in
+            switch results {
+            case .success(let topPaidApps):
+                guard let topPaidApps else { return }
+                group1 = topPaidApps
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            dispatchGroup.leave()
+        }
+        dispatchGroup.enter()
+        NetworkManager.shared.fetchTopFreeAppsForRows { results in
+            switch results {
+            case .success(let topFreeApps):
+                guard let topFreeApps else { return }
+                group2 = topFreeApps
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.items = [
+                TodayCellItem.init(
+                    category: "Daily List",
+                    title: group1?.feed.title ?? "",
+                    description: "All the tools and apps you need to intelegently orginize your life the right away",
+                    image: #imageLiteral(resourceName: "garden"),
+                    backgroundColor: .secondarySystemBackground,
+                    cellType: .multiple, apps: group1?.feed.results ?? []
+                ),
+                TodayCellItem.init(
+                    category: "Daily List",
+                    title: group2?.feed.title ?? "",
+                    description: "All the tools and apps you need to intelegently orginize your life the right away",
+                    image: #imageLiteral(resourceName: "garden"),
+                    backgroundColor: .secondarySystemBackground,
+                    cellType: .multiple, apps: group2?.feed.results ?? []
+                ),
+                TodayCellItem.init(
+                    category: "HOLIDAYS",
+                    title: "Travel on a budget",
+                    description: "All you need to know how to travel without packing everthing",
+                    image: #imageLiteral(resourceName: "holiday"),
+                    backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1),
+                    cellType: .single,
+                    apps: []
+                ),
+            ]
+            self.activityIndicatorView.stopAnimating()
+            self.collectionView.reloadData()
+        }
     }
     
     @objc private func handleRemoveExpandedView() {
@@ -121,7 +195,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         view.addSubview(expandedView)
         addChild(expandedViewController)
         self.expandedViewController = expandedViewController
-//        self.collectionView.isUserInteractionEnabled = false
+        //        self.collectionView.isUserInteractionEnabled = false
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
