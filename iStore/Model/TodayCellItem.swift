@@ -6,4 +6,10 @@ struct TodayCellItem {
     let description: String
     let image: UIImage
     let backgroundColor: UIColor
+    
+    let cellType: CellType
+    
+    enum CellType: String {
+        case single, multiple
+    }
 }
