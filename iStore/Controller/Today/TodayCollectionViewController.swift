@@ -9,10 +9,12 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
-    let items: [TodayCellItem] = [
-        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground),
-        .init(category: "HOLIDAYS", title: "Travel on a budget", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "holiday"), backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1)),
-        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground)
+    static let cellSize: CGFloat = 500
+    
+    let items = [
+        TodayCellItem.init(category: "THE DAILY LIST", title: "Test drive these CarPlay apps", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground),
+        TodayCellItem.init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground),
+        TodayCellItem.init(category: "HOLIDAYS", title: "Travel on a budget", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "holiday"), backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1)),
     ]
     
     override func viewDidLoad() {
@@ -20,6 +22,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
         navigationController?.isNavigationBarHidden = true
         collectionView.backgroundColor = .systemBackground
         collectionView.register(TodayCollectionViewCell.self, forCellWithReuseIdentifier: TodayCollectionViewCell.identifier)
+        collectionView.register(TodayAppMultipleCell.self, forCellWithReuseIdentifier: TodayAppMultipleCell.identifier)
     }
     
     @objc private func handleRemoveExpandedView() {
@@ -57,6 +60,11 @@ extension TodayCollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayAppMultipleCell.identifier, for: indexPath) as! TodayAppMultipleCell
+            cell.todayItem = items[indexPath.item]
+            return cell
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayCollectionViewCell.identifier, for: indexPath) as! TodayCollectionViewCell
         cell.todayItem = items[indexPath.item]
         return cell
@@ -67,7 +75,7 @@ extension TodayCollectionViewController {
 extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.frame.width - 60, height: 450)
+        .init(width: collectionView.frame.width - 60, height: TodayCollectionViewController.cellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
