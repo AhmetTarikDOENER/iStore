@@ -4,12 +4,14 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "TodayCollectionViewCell"
     
+    var topConstraint: NSLayoutConstraint?
     var todayItem: TodayCellItem! {
         didSet {
             categoryLabel.text = todayItem.category
             titleLabel.text = todayItem.title
             imageView.image = todayItem.image
             descriptionLabel.text = todayItem.description
+            backgroundColor = todayItem.backgroundColor
         }
     }
     
@@ -17,8 +19,6 @@ final class TodayCollectionViewCell: UICollectionViewCell {
     let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
     let titleLabel = UILabel(text: "Utilizing your time", font: .boldSystemFont(ofSize: 28))
     let descriptionLabel = UILabel(text: "All the tools and apps you need to intelegently orginize your life the right away", font: .boldSystemFont(ofSize: 16), numberOfLines: 3)
-    
-    var topConstraint: NSLayoutConstraint?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,7 +44,6 @@ final class TodayCollectionViewCell: UICollectionViewCell {
         )
         contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
@@ -53,5 +52,7 @@ final class TodayCollectionViewCell: UICollectionViewCell {
             imageView.widthAnchor.constraint(equalToConstant: 200),
             imageView.heightAnchor.constraint(equalToConstant: 200),
         ])
+        self.topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
+        self.topConstraint?.isActive = true
     }
 }

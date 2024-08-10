@@ -10,9 +10,9 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     var heightConstraint: NSLayoutConstraint?
     
     let items: [TodayCellItem] = [
-        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .systemBackground),
+        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground),
         .init(category: "HOLIDAYS", title: "Travel on a budget", description: "All you need to know how to travel without packing everthing", image: #imageLiteral(resourceName: "holiday"), backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1)),
-        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .systemBackground)
+        .init(category: "LIFE HACK", title: "Utilizing yout time", description: "All the tools and apps you need to intelegently orginize your life the right away", image: #imageLiteral(resourceName: "garden"), backgroundColor: .secondarySystemBackground)
     ]
     
     override func viewDidLoad() {
@@ -94,9 +94,13 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
                 if let tabBarFrame = self.tabBarController?.tabBar.frame {
                     self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
                 }
+                guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+                cell.todayCell.topConstraint?.constant = 24
+                cell.layoutIfNeeded()
             }) { _ in
                 gesture.view?.removeFromSuperview()
                 self.expandedViewController.removeFromParent()
+                self.collectionView.isUserInteractionEnabled = true
             }
     }
     
@@ -112,6 +116,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         view.addSubview(expandedView)
         addChild(expandedViewController)
         self.expandedViewController = expandedViewController
+        self.collectionView.isUserInteractionEnabled = false
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
@@ -134,6 +139,9 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
                 self.heightConstraint?.constant = self.view.frame.height
                 self.view.layoutIfNeeded()
                 self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+                guard let cell = expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+                cell.todayCell.topConstraint?.constant = 70
+                cell.layoutIfNeeded()
             }
     }
 }

@@ -23,7 +23,7 @@ final class TodayAppExpandedHeaderCell: UITableViewCell {
         todayCell.fillSuperView()
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 80),
             closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 10),
             closeButton.widthAnchor.constraint(equalToConstant: 80),
             closeButton.heightAnchor.constraint(equalToConstant: 40)

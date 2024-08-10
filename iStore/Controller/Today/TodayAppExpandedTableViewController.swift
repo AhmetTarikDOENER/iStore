@@ -8,7 +8,15 @@ final class TodayAppExpandedTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        prepareTableView()
+    }
+    
+    private func prepareTableView() {
         tableView.separatorStyle = .none
+        tableView.contentInsetAdjustmentBehavior = .never
+        let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+        let height = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
     }
     
     @objc private func handleDismiss(button: UIButton) {
@@ -28,6 +36,7 @@ extension TodayAppExpandedTableViewController {
             let headerCell = TodayAppExpandedHeaderCell()
             headerCell.closeButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
             headerCell.todayCell.todayItem = todayItem
+            
             return headerCell
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()
