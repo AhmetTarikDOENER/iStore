@@ -140,8 +140,25 @@ extension TodayCollectionViewController {
         let cellType = items[indexPath.item].cellType.rawValue
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType, for: indexPath) as! TodayBaseCollectionViewCell
         cell.todayItem = items[indexPath.row]
+        (cell as? TodayAppMultipleCell)?.multipleAppsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapApp)))
         
         return cell
+    }
+    
+    @objc private func didTapApp(gesture: UITapGestureRecognizer) {
+        let collectionView = gesture.view
+        var superview = collectionView?.superview
+        while superview != nil {
+            if let cell = superview as? TodayAppMultipleCell {
+                guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                let apps = self.items[indexPath.item].apps
+                let fullScreenController = TodayAppMultipleCollectionViewController(presentationMode: .fullscreen)
+                fullScreenController.modalPresentationStyle = .fullScreen
+                fullScreenController.apps = apps
+                present(fullScreenController, animated: true)
+            }
+            superview = superview?.superview
+        }
     }
 }
 
