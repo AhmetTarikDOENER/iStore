@@ -3,12 +3,17 @@ import UIKit
 final class TodayCollectionViewController: RootListCollectionViewController {
     
     static let cellSize: CGFloat = 500
+    
+    var items = [TodayCellItem]()
+    
     var startingFrame: CGRect?
     var expandedViewController: TodayAppExpandedTableViewController!
+    
     var topConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
+    
     let activityIndicatorView: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -16,8 +21,6 @@ final class TodayCollectionViewController: RootListCollectionViewController {
         spinner.hidesWhenStopped = true
         return spinner
     }()
-
-    var items = [TodayCellItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -184,43 +187,50 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let expandedViewController = TodayAppExpandedTableViewController()
-        expandedViewController.todayItem = items[indexPath.item]
-        expandedViewController.dismissHandler = {
-            self.handleRemoveExpandedView()
-        }
-        guard let expandedView = expandedViewController.view else { return }
-        expandedView.layer.cornerRadius = 12
-        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
-        view.addSubview(expandedView)
-        addChild(expandedViewController)
-        self.expandedViewController = expandedViewController
-        //        self.collectionView.isUserInteractionEnabled = false
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
-        self.startingFrame = startingFrame
-        expandedView.translatesAutoresizingMaskIntoConstraints = false
-        topConstraint = expandedView.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
-        leadingConstraint = expandedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
-        widthConstraint = expandedView.widthAnchor.constraint(equalToConstant: startingFrame.width)
-        heightConstraint = expandedView.heightAnchor.constraint(equalToConstant: startingFrame.height)
-        [topConstraint, leadingConstraint, widthConstraint, heightConstraint].forEach{ $0?.isActive = true }
-        self.view.layoutIfNeeded()
-        UIView.animate(
-            withDuration: 0.7,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.5,
-            options: .curveEaseOut) {
-                self.topConstraint?.constant = 0
-                self.leadingConstraint?.constant = 0
-                self.widthConstraint?.constant = self.view.frame.width
-                self.heightConstraint?.constant = self.view.frame.height
-                self.view.layoutIfNeeded()
-                self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
-                guard let cell = expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
-                cell.todayCell.topConstraint?.constant = 70
-                cell.layoutIfNeeded()
+        if items[indexPath.item].cellType == .multiple {
+            let fullScreenController = TodayAppMultipleCollectionViewController(presentationMode: .fullscreen)
+            fullScreenController.apps = self.items[indexPath.item].apps
+            fullScreenController.modalPresentationStyle = .fullScreen
+            present(fullScreenController, animated: true)
+        } else {
+            let expandedViewController = TodayAppExpandedTableViewController()
+            expandedViewController.todayItem = items[indexPath.item]
+            expandedViewController.dismissHandler = {
+                self.handleRemoveExpandedView()
             }
+            guard let expandedView = expandedViewController.view else { return }
+            expandedView.layer.cornerRadius = 12
+            expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
+            view.addSubview(expandedView)
+            addChild(expandedViewController)
+            self.expandedViewController = expandedViewController
+            //        self.collectionView.isUserInteractionEnabled = false
+            guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
+            self.startingFrame = startingFrame
+            expandedView.translatesAutoresizingMaskIntoConstraints = false
+            topConstraint = expandedView.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
+            leadingConstraint = expandedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
+            widthConstraint = expandedView.widthAnchor.constraint(equalToConstant: startingFrame.width)
+            heightConstraint = expandedView.heightAnchor.constraint(equalToConstant: startingFrame.height)
+            [topConstraint, leadingConstraint, widthConstraint, heightConstraint].forEach{ $0?.isActive = true }
+            self.view.layoutIfNeeded()
+            UIView.animate(
+                withDuration: 0.7,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 0.5,
+                options: .curveEaseOut) {
+                    self.topConstraint?.constant = 0
+                    self.leadingConstraint?.constant = 0
+                    self.widthConstraint?.constant = self.view.frame.width
+                    self.heightConstraint?.constant = self.view.frame.height
+                    self.view.layoutIfNeeded()
+                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+                    guard let cell = expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+                    cell.todayCell.topConstraint?.constant = 70
+                    cell.layoutIfNeeded()
+                }
+        }
     }
 }
