@@ -214,22 +214,29 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         navigationController?.present(fullScreenNavController, animated: true)
     }
     
-    private func showOtherListCategoryInFullScreenMode(for indexPath: IndexPath) {
+    private func setupExpandedViewController(for indexPath: IndexPath) {
         let expandedViewController = TodayAppExpandedTableViewController()
         expandedViewController.todayItem = items[indexPath.item]
         expandedViewController.dismissHandler = {
             self.handleRemoveExpandedView()
         }
-        guard let expandedView = expandedViewController.view else { return }
-        expandedView.layer.cornerRadius = 12
-        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
-        view.addSubview(expandedView)
-        addChild(expandedViewController)
+        expandedViewController.view.layer.cornerRadius = 12
         self.expandedViewController = expandedViewController
-        //        self.collectionView.isUserInteractionEnabled = false
+    }
+    
+    private func setupStartingFrame(_ indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame
+    }
+    
+    private func configureFullScreenStartingFrame(for indexPath: IndexPath) {
+        guard let expandedView = expandedViewController.view else { return }
+        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
+        view.addSubview(expandedView)
+        addChild(expandedViewController)
+        setupStartingFrame(indexPath)
+        guard let startingFrame else { return }
         expandedView.translatesAutoresizingMaskIntoConstraints = false
         topConstraint = expandedView.topAnchor.constraint(equalTo: view.topAnchor, constant: startingFrame.origin.y)
         leadingConstraint = expandedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startingFrame.origin.x)
@@ -237,22 +244,32 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         heightConstraint = expandedView.heightAnchor.constraint(equalToConstant: startingFrame.height)
         [topConstraint, leadingConstraint, widthConstraint, heightConstraint].forEach{ $0?.isActive = true }
         self.view.layoutIfNeeded()
+    }
+    
+    fileprivate func beginFullScreenAnimation() {
         UIView.animate(
             withDuration: 0.7,
             delay: 0,
             usingSpringWithDamping: 0.7,
             initialSpringVelocity: 0.5,
-            options: .curveEaseOut) {
-                self.topConstraint?.constant = 0
-                self.leadingConstraint?.constant = 0
-                self.widthConstraint?.constant = self.view.frame.width
-                self.heightConstraint?.constant = self.view.frame.height
-                self.view.layoutIfNeeded()
-                self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
-                guard let cell = expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
-                cell.todayCell.topConstraint?.constant = 70
-                cell.layoutIfNeeded()
-            }
+            options: .curveEaseOut
+        ) {
+            self.topConstraint?.constant = 0
+            self.leadingConstraint?.constant = 0
+            self.widthConstraint?.constant = self.view.frame.width
+            self.heightConstraint?.constant = self.view.frame.height
+            self.view.layoutIfNeeded()
+            self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height
+            guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+            cell.todayCell.topConstraint?.constant = 70
+            cell.layoutIfNeeded()
+        }
+    }
+    
+    private func showOtherListCategoryInFullScreenMode(for indexPath: IndexPath) {
+        setupExpandedViewController(for: indexPath)
+        configureFullScreenStartingFrame(for: indexPath)
+        beginFullScreenAnimation()
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
