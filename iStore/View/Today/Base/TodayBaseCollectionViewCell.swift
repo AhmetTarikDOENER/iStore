@@ -5,10 +5,16 @@ class TodayBaseCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.shadowOpacity = 0.1
-        layer.shadowRadius = 10
-        layer.shadowOffset = .init(width: 0, height: 10)
-        layer.shadowColor = UIColor.label.cgColor
+        self.backgroundView = UIView()
+        addSubview(self.backgroundView!)
+        self.backgroundView?.fillSuperView()
+        self.backgroundView?.backgroundColor = .secondarySystemBackground
+        self.backgroundView?.layer.cornerRadius = 12 
+        self.backgroundView?.layer.shadowOpacity = 0.1
+        self.backgroundView?.layer.shadowRadius = 10
+        self.backgroundView?.layer.shadowOffset = .init(width: 0, height: 10)
+        self.backgroundView?.layer.shadowColor = UIColor.label.cgColor
+        self.backgroundView?.layer.shouldRasterize = true
     }
     
     required init?(coder: NSCoder) {
