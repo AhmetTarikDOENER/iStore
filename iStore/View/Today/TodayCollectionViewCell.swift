@@ -13,6 +13,7 @@ final class TodayCollectionViewCell: TodayBaseCollectionViewCell {
             imageView.image = todayItem.image
             descriptionLabel.text = todayItem.description
             backgroundColor = todayItem.backgroundColor
+            backgroundView?.backgroundColor = todayItem.backgroundColor
         }
     }
     
