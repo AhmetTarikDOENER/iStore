@@ -222,6 +222,16 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         }
         expandedViewController.view.layer.cornerRadius = 12
         self.expandedViewController = expandedViewController
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleDragging))
+        gestureRecognizer.delegate = self
+        expandedViewController.view.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    @objc private func handleDragging(gesture: UIPanGestureRecognizer) {
+        let translationY = gesture.translation(in: expandedViewController.view).y
+        let scale = 1 - translationY / 1200
+        let transform = CGAffineTransform.init(scaleX: scale, y: scale)
+        self.expandedViewController.view.transform = transform
     }
     
     private func setupStartingFrame(_ indexPath: IndexPath) {
@@ -277,5 +287,12 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         case .multiple: showDailyListCategeroyInFullScreenMode(for: indexPath)
         default: showOtherListCategoryInFullScreenMode(for: indexPath)
         }
+    }
+}
+
+//  MARK: - UIGestureRecognizerDelegate:
+extension TodayCollectionViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true /// for to be enable scrolling behaviour after adding gesture
     }
 }
