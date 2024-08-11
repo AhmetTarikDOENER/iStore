@@ -155,7 +155,10 @@ extension TodayCollectionViewController {
                 let fullScreenController = TodayAppMultipleCollectionViewController(presentationMode: .fullscreen)
                 fullScreenController.modalPresentationStyle = .fullScreen
                 fullScreenController.apps = apps
-                present(fullScreenController, animated: true)
+                let navVC = TodayNavigationBarBackEnabledController(rootViewController: fullScreenController)
+                navVC.modalPresentationStyle = .fullScreen
+                navigationController?.present(navVC, animated: true)
+                return
             }
             superview = superview?.superview
         }
