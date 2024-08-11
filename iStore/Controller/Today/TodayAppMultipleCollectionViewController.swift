@@ -35,6 +35,7 @@ final class TodayAppMultipleCollectionViewController: RootListCollectionViewCont
         collectionView.register(TodayMultipleAppCollectionViewCell.self, forCellWithReuseIdentifier: TodayMultipleAppCollectionViewCell.identifier)
         if presentationMode == .fullscreen {
             configureCloseButton()
+            navigationController?.isNavigationBarHidden = true
         } else {
             collectionView.isScrollEnabled = false
         }
@@ -74,6 +75,11 @@ extension TodayAppMultipleCollectionViewController {
 }
 //  MARK: - UICollectionViewDelegateFlowLayout:
 extension TodayAppMultipleCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let appDetailController = AppDetailCollectionViewController(id: apps[indexPath.item].id)
+        navigationController?.pushViewController(appDetailController, animated: true)
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height: CGFloat = 80

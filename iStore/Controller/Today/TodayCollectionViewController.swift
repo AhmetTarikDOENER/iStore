@@ -190,8 +190,9 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         if items[indexPath.item].cellType == .multiple {
             let fullScreenController = TodayAppMultipleCollectionViewController(presentationMode: .fullscreen)
             fullScreenController.apps = self.items[indexPath.item].apps
-            fullScreenController.modalPresentationStyle = .fullScreen
-            present(fullScreenController, animated: true)
+            let fullScreenNavController = UINavigationController(rootViewController: fullScreenController)
+            fullScreenNavController.modalPresentationStyle = .fullScreen
+            navigationController?.present(fullScreenNavController, animated: true)
         } else {
             let expandedViewController = TodayAppExpandedTableViewController()
             expandedViewController.todayItem = items[indexPath.item]
