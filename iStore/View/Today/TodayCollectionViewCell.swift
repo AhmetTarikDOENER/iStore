@@ -8,6 +8,7 @@ final class TodayCollectionViewCell: TodayBaseCollectionViewCell {
     override var todayItem: TodayCellItem! {
         didSet {
             categoryLabel.text = todayItem.category
+            categoryLabel.textColor = .black
             titleLabel.text = todayItem.title
             imageView.image = todayItem.image
             descriptionLabel.text = todayItem.description
@@ -16,7 +17,7 @@ final class TodayCollectionViewCell: TodayBaseCollectionViewCell {
     }
     
     let imageView = UIImageView(image: #imageLiteral(resourceName: "garden"))
-    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
+    let categoryLabel = UILabel(text: "LIFE HACK", font: .systemFont(ofSize: 20, weight: .black))
     let titleLabel = UILabel(text: "Utilizing your time", font: .boldSystemFont(ofSize: 28))
     let descriptionLabel = UILabel(text: "All the tools and apps you need to intelegently orginize your life the right away", font: .boldSystemFont(ofSize: 16), numberOfLines: 3)
 
@@ -32,8 +33,10 @@ final class TodayCollectionViewCell: TodayBaseCollectionViewCell {
     private func configureHierarchy() {
         backgroundColor = .systemGray6
         layer.cornerRadius = 12
-        clipsToBounds = true
+        titleLabel.textColor = .black
+        descriptionLabel.textColor = .black
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let imageContainerView = UIView()
         imageContainerView.translatesAutoresizingMaskIntoConstraints = false

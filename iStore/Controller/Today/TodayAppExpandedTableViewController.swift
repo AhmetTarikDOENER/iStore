@@ -36,7 +36,7 @@ extension TodayAppExpandedTableViewController {
             let headerCell = TodayAppExpandedHeaderCell()
             headerCell.closeButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
             headerCell.todayCell.todayItem = todayItem
-            
+            headerCell.clipsToBounds = true
             return headerCell
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()
