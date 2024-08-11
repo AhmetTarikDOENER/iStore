@@ -14,6 +14,8 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     var widthConstraint: NSLayoutConstraint?
     var heightConstraint: NSLayoutConstraint?
     
+    private let blurVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+    
     let activityIndicatorView: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +35,9 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     private func configureHierarchy() {
         navigationController?.isNavigationBarHidden = true
         collectionView.backgroundColor = .systemBackground
-        view.addSubview(activityIndicatorView)
+        view.addSubviews(activityIndicatorView, blurVisualEffectView)
+        blurVisualEffectView.fillSuperView()
+        blurVisualEffectView.isHidden = true
         NSLayoutConstraint.activate([
             activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -103,6 +107,8 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     }
     
     @objc private func handleRemoveExpandedView() {
+        self.blurVisualEffectView.isHidden = true
+        self.expandedViewController.view.transform = .identity
         self.navigationController?.navigationBar.isHidden = false
         UIView.animate(withDuration: 0.7,
                        delay: 0,
@@ -229,9 +235,15 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     @objc private func handleDragging(gesture: UIPanGestureRecognizer) {
         let translationY = gesture.translation(in: expandedViewController.view).y
-        let scale = 1 - translationY / 1200
-        let transform = CGAffineTransform.init(scaleX: scale, y: scale)
-        self.expandedViewController.view.transform = transform
+        switch gesture.state {
+        case .changed:
+            let scale = 1 - translationY / 1200
+            let transform = CGAffineTransform.init(scaleX: scale, y: scale)
+            self.expandedViewController.view.transform = transform
+        case .ended:
+            handleRemoveExpandedView()
+        default: break
+        }
     }
     
     private func setupStartingFrame(_ indexPath: IndexPath) {
@@ -264,6 +276,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
             initialSpringVelocity: 0.5,
             options: .curveEaseOut
         ) {
+            self.blurVisualEffectView.isHidden = false
             self.topConstraint?.constant = 0
             self.leadingConstraint?.constant = 0
             self.widthConstraint?.constant = self.view.frame.width
