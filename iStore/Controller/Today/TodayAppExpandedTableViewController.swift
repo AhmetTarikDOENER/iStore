@@ -5,6 +5,12 @@ final class TodayAppExpandedTableViewController: UITableViewController {
     var dismissHandler: (() -> Void)?
     var todayItem: TodayCellItem?
     
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 0 {
+            scrollView.isScrollEnabled = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground

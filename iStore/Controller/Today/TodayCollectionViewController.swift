@@ -237,11 +237,15 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         let translationY = gesture.translation(in: expandedViewController.view).y
         switch gesture.state {
         case .changed:
-            let scale = 1 - translationY / 1200
-            let transform = CGAffineTransform.init(scaleX: scale, y: scale)
-            self.expandedViewController.view.transform = transform
+            if translationY > 0 {
+                let scale = 1 - translationY / 1000
+                let transform = CGAffineTransform.init(scaleX: scale, y: scale)
+                self.expandedViewController.view.transform = transform
+            }
         case .ended:
-            handleRemoveExpandedView()
+            if translationY > 0 {
+                handleRemoveExpandedView()
+            }
         default: break
         }
     }
