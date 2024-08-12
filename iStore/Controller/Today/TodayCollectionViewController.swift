@@ -188,31 +188,32 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
         .init(top: 30, left: 0, bottom: 30, right: 0)
     }
     
-    @objc private func didHandleRemove(gesture: UITapGestureRecognizer) {
-        UIView.animate(
-            withDuration: 0.7,
-            delay: 0,
-            usingSpringWithDamping: 0.7,
-            initialSpringVelocity: 0.7,
-            options: .curveEaseOut, animations: {
-                self.expandedViewController.tableView.contentOffset = .zero
-                guard let startingFrame = self.startingFrame else { return }
-                self.topConstraint?.constant = startingFrame.origin.y
-                self.leadingConstraint?.constant = startingFrame.origin.x
-                self.widthConstraint?.constant = startingFrame.width
-                self.heightConstraint?.constant = startingFrame.height
-                if let tabBarFrame = self.tabBarController?.tabBar.frame {
-                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
-                }
-                guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
-                cell.todayCell.topConstraint?.constant = 24
-                cell.layoutIfNeeded()
-            }) { _ in
-                gesture.view?.removeFromSuperview()
-                self.expandedViewController.removeFromParent()
-                self.collectionView.isUserInteractionEnabled = true
-            }
-    }
+//    @objc private func didHandleRemove(gesture: UITapGestureRecognizer) {
+//        UIView.animate(
+//            withDuration: 0.7,
+//            delay: 0,
+//            usingSpringWithDamping: 0.7,
+//            initialSpringVelocity: 0.7,
+//            options: .curveEaseOut, animations: {
+//                self.blurVisualEffectView.isHidden = true
+//                self.expandedViewController.tableView.contentOffset = .zero
+//                guard let startingFrame = self.startingFrame else { return }
+//                self.topConstraint?.constant = startingFrame.origin.y
+//                self.leadingConstraint?.constant = startingFrame.origin.x
+//                self.widthConstraint?.constant = startingFrame.width
+//                self.heightConstraint?.constant = startingFrame.height
+//                if let tabBarFrame = self.tabBarController?.tabBar.frame {
+//                    self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
+//                }
+//                guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+//                cell.todayCell.topConstraint?.constant = 24
+//                cell.layoutIfNeeded()
+//            }) { _ in
+//                gesture.view?.removeFromSuperview()
+//                self.expandedViewController.removeFromParent()
+//                self.collectionView.isUserInteractionEnabled = true
+//            }
+//    }
     
     private func showDailyListCategeroyInFullScreenMode(for indexPath: IndexPath) {
         let fullScreenController = TodayAppMultipleCollectionViewController(presentationMode: .fullscreen)
@@ -269,7 +270,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     private func configureFullScreenStartingFrame(for indexPath: IndexPath) {
         guard let expandedView = expandedViewController.view else { return }
-        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didHandleRemove)))
+        expandedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoveExpandedView)))
         view.addSubview(expandedView)
         addChild(expandedViewController)
         setupStartingFrame(indexPath)

@@ -5,6 +5,7 @@ final class TodayAppExpandedViewController: UIViewController {
     static let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
     static let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
     
+    private let floatingContainerView = UIView()
     var dismissHandler: (() -> Void)?
     var todayItem: TodayCellItem?
     
@@ -22,6 +23,17 @@ final class TodayAppExpandedViewController: UIViewController {
         if scrollView.contentOffset.y < 0 {
             scrollView.isScrollEnabled = false
             scrollView.isScrollEnabled = true
+        }
+        let translationY: CGFloat = 290
+        let transform = scrollView.contentOffset.y > 100 ? CGAffineTransform(translationX: 0, y: translationY) : .identity
+        UIView.animate(
+            withDuration: 0.7,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseOut
+        ) {
+            self.floatingContainerView.transform = transform
         }
     }
     
@@ -51,12 +63,12 @@ final class TodayAppExpandedViewController: UIViewController {
         tableView.fillSuperView()
         tableView.separatorStyle = .none
         tableView.contentInsetAdjustmentBehavior = .never
+        tableView.allowsSelection = false
         tableView.contentInset = .init(top: 0, left: 0, bottom: TodayAppExpandedViewController.statusBarHeight, right: 0)
         configureFloatingControlsView()
     }
     
     private func configureFloatingControlsView() {
-        let floatingContainerView = UIView()
         floatingContainerView.translatesAutoresizingMaskIntoConstraints = false
         floatingContainerView.layer.cornerRadius = 16
         floatingContainerView.clipsToBounds = true
@@ -64,7 +76,7 @@ final class TodayAppExpandedViewController: UIViewController {
         NSLayoutConstraint.activate([
             floatingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             floatingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -TodayAppExpandedViewController.statusBarHeight),
+            floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
             floatingContainerView.heightAnchor.constraint(equalToConstant: 90)
         ])
         let blurredVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialLight))
@@ -97,7 +109,6 @@ final class TodayAppExpandedViewController: UIViewController {
         stackView.alignment = .center
         floatingContainerView.addSubview(stackView)
         stackView.fillSuperView(.init(top: 0, left: 16, bottom: 0, right: 16))
-        
     }
     
     @objc private func handleDismiss(button: UIButton) {
