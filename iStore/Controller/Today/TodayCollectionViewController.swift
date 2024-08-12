@@ -8,6 +8,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     
     var startingFrame: CGRect?
     var expandedViewController: TodayAppExpandedTableViewController!
+    var expandedViewBeginOffset: CGFloat = 0
     
     var topConstraint: NSLayoutConstraint?
     var leadingConstraint: NSLayoutConstraint?
@@ -127,6 +128,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
                 self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
             }
             guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
+            cell.closeButton.isHidden = true
             cell.todayCell.topConstraint?.constant = 68
             cell.layoutIfNeeded()
         }, completion: { _ in
@@ -234,11 +236,20 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     @objc private func handleDragging(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .began {
+            expandedViewBeginOffset = expandedViewController.tableView.contentOffset.y
+        }
+        if expandedViewController.tableView.contentOffset.y > 0 {
+            return
+        }
         let translationY = gesture.translation(in: expandedViewController.view).y
         switch gesture.state {
         case .changed:
             if translationY > 0 {
-                let scale = 1 - translationY / 1000
+                let dOffset = translationY - expandedViewBeginOffset
+                var scale = 1 - dOffset / 1000
+                scale = min(1, scale)
+                scale = max(0.5, scale)
                 let transform = CGAffineTransform.init(scaleX: scale, y: scale)
                 self.expandedViewController.view.transform = transform
             }

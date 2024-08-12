@@ -8,6 +8,7 @@ final class TodayAppExpandedTableViewController: UITableViewController {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < 0 {
             scrollView.isScrollEnabled = false
+            scrollView.isScrollEnabled = true
         }
     }
     
@@ -43,6 +44,7 @@ extension TodayAppExpandedTableViewController {
             headerCell.closeButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
             headerCell.todayCell.todayItem = todayItem
             headerCell.clipsToBounds = true
+            headerCell.todayCell.backgroundView = nil
             return headerCell
         }
         let cell = TodayAppExpandedDescriptionTableViewCell()
