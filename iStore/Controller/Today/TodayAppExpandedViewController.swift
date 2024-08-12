@@ -2,6 +2,9 @@ import UIKit
 
 final class TodayAppExpandedViewController: UIViewController {
     
+    static let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+    static let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+    
     var dismissHandler: (() -> Void)?
     var todayItem: TodayCellItem?
     
@@ -48,9 +51,7 @@ final class TodayAppExpandedViewController: UIViewController {
         tableView.fillSuperView()
         tableView.separatorStyle = .none
         tableView.contentInsetAdjustmentBehavior = .never
-        let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
-        let height = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
+        tableView.contentInset = .init(top: 0, left: 0, bottom: TodayAppExpandedViewController.statusBarHeight, right: 0)
         configureFloatingControlsView()
     }
     
@@ -63,7 +64,7 @@ final class TodayAppExpandedViewController: UIViewController {
         NSLayoutConstraint.activate([
             floatingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             floatingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -TodayAppExpandedViewController.statusBarHeight),
             floatingContainerView.heightAnchor.constraint(equalToConstant: 90)
         ])
         let blurredVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialLight))
