@@ -51,6 +51,24 @@ final class TodayAppExpandedViewController: UIViewController {
         let window = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
         let height = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
+        configureFloatingControlsView()
+    }
+    
+    private func configureFloatingControlsView() {
+        let floatingContainerView = UIView()
+        floatingContainerView.translatesAutoresizingMaskIntoConstraints = false
+        floatingContainerView.layer.cornerRadius = 16
+        floatingContainerView.clipsToBounds = true
+        view.addSubview(floatingContainerView)
+        NSLayoutConstraint.activate([
+            floatingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            floatingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            floatingContainerView.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        let blurredVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialLight))
+        floatingContainerView.addSubview(blurredVisualEffectView)
+        blurredVisualEffectView.fillSuperView()
     }
     
     @objc private func handleDismiss(button: UIButton) {
