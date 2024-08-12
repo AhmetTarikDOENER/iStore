@@ -7,7 +7,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
     var items = [TodayCellItem]()
     
     var startingFrame: CGRect?
-    var expandedViewController: TodayAppExpandedTableViewController!
+    var expandedViewController: TodayAppExpandedViewController!
     var expandedViewBeginOffset: CGFloat = 0
     
     var topConstraint: NSLayoutConstraint?
@@ -78,7 +78,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
             self.items = [
                 TodayCellItem.init(
                     category: "HOLIDAYS",
-                    title: "Travel on a budget",
+                    title: "Travel on a Budget",
                     description: "All you need to know how to travel without packing everthing",
                     image: #imageLiteral(resourceName: "holiday"),
                     backgroundColor: #colorLiteral(red: 0.9803921569, green: 0.9607843137, blue: 0.7254901961, alpha: 1),
@@ -128,7 +128,7 @@ final class TodayCollectionViewController: RootListCollectionViewController {
                 self.tabBarController?.tabBar.frame.origin.y = self.view.frame.size.height - tabBarFrame.height
             }
             guard let cell = self.expandedViewController.tableView.cellForRow(at: [0, 0]) as? TodayAppExpandedHeaderCell else { return }
-            cell.closeButton.isHidden = true
+            self.expandedViewController.closeButton.isHidden = true
             cell.todayCell.topConstraint?.constant = 68
             cell.layoutIfNeeded()
         }, completion: { _ in
@@ -223,7 +223,7 @@ extension TodayCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func setupExpandedViewController(for indexPath: IndexPath) {
-        let expandedViewController = TodayAppExpandedTableViewController()
+        let expandedViewController = TodayAppExpandedViewController()
         expandedViewController.todayItem = items[indexPath.item]
         expandedViewController.dismissHandler = {
             self.handleRemoveExpandedView()
