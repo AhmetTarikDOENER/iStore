@@ -64,11 +64,39 @@ final class TodayAppExpandedViewController: UIViewController {
             floatingContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             floatingContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             floatingContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
-            floatingContainerView.heightAnchor.constraint(equalToConstant: 100)
+            floatingContainerView.heightAnchor.constraint(equalToConstant: 90)
         ])
         let blurredVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemChromeMaterialLight))
         floatingContainerView.addSubview(blurredVisualEffectView)
         blurredVisualEffectView.fillSuperView()
+        let imageView = UIImageView(cornerRadius: 16)
+        imageView.image = todayItem?.image
+        imageView.widthAnchor.constraint(equalToConstant: 58).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        let getButton = UIButton(title: "GET")
+        getButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        getButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        getButton.setTitleColor(.white, for: .normal)
+        getButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        getButton.backgroundColor = .darkGray
+        getButton.layer.cornerRadius = 16
+        let verticalStackView = VerticalStackView(
+            arrangedSubviews: [
+                UILabel(text: "Life Hack", font: .boldSystemFont(ofSize: 18)),
+                UILabel(text: "Utilizing your time", font: .systemFont(ofSize: 16))
+            ]
+        )
+        verticalStackView.isLayoutMarginsRelativeArrangement = false
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                imageView,
+                verticalStackView,
+                getButton
+            ], customSpacing: 16)
+        stackView.alignment = .center
+        floatingContainerView.addSubview(stackView)
+        stackView.fillSuperView(.init(top: 0, left: 16, bottom: 0, right: 16))
+        
     }
     
     @objc private func handleDismiss(button: UIButton) {
