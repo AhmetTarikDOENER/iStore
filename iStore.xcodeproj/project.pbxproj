@@ -43,6 +43,7 @@
 		45B0D83B2C66AEE800F6ACF8 /* TodayAppExpandedHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0D83A2C66AEE800F6ACF8 /* TodayAppExpandedHeaderCell.swift */; };
 		45B0D83D2C66C4AA00F6ACF8 /* TodayCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0D83C2C66C4AA00F6ACF8 /* TodayCellItem.swift */; };
 		45DB2D722C6B924F009AB4AF /* AppCompositionalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DB2D712C6B924F009AB4AF /* AppCompositionalView.swift */; };
+		45DB2D762C6BE3BF009AB4AF /* CompositionalHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DB2D752C6BE3BF009AB4AF /* CompositionalHeaderReusableView.swift */; };
 		45F653702C664F45002D64DF /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F6536F2C664F45002D64DF /* Reviews.swift */; };
 		45FF94262C5F8C650087AF62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94252C5F8C650087AF62 /* AppDelegate.swift */; };
 		45FF94282C5F8C650087AF62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FF94272C5F8C650087AF62 /* SceneDelegate.swift */; };
@@ -93,6 +94,7 @@
 		45B0D83A2C66AEE800F6ACF8 /* TodayAppExpandedHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAppExpandedHeaderCell.swift; sourceTree = "<group>"; };
 		45B0D83C2C66C4AA00F6ACF8 /* TodayCellItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCellItem.swift; sourceTree = "<group>"; };
 		45DB2D712C6B924F009AB4AF /* AppCompositionalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCompositionalView.swift; sourceTree = "<group>"; };
+		45DB2D752C6BE3BF009AB4AF /* CompositionalHeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalHeaderReusableView.swift; sourceTree = "<group>"; };
 		45F6536F2C664F45002D64DF /* Reviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
 		45FF94222C5F8C650087AF62 /* iStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45FF94252C5F8C650087AF62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				45DB2D712C6B924F009AB4AF /* AppCompositionalView.swift */,
+				45DB2D752C6BE3BF009AB4AF /* CompositionalHeaderReusableView.swift */,
 			);
 			path = "Compositional Layout";
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				45A6E1C92C64001400AA6001 /* UIStackView+Extension.swift in Sources */,
 				450C37CA2C6161A000D23864 /* UILabel+Extension.swift in Sources */,
 				45A6E1D12C640B8500AA6001 /* ReviewCollectionViewCell.swift in Sources */,
+				45DB2D762C6BE3BF009AB4AF /* CompositionalHeaderReusableView.swift in Sources */,
 				450C37C22C615E0800D23864 /* RootListCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
