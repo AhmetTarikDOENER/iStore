@@ -3,7 +3,16 @@ import SwiftUI
 final class CompositionalCollectionViewController: UICollectionViewController {
     
     init() {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 16)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.85), heightDimension: .absolute(300))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        section.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        super.init(collectionViewLayout: layout)
     }
     
     required init?(coder: NSCoder) {
@@ -12,6 +21,9 @@ final class CompositionalCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Apps"
+        navigationItem.largeTitleDisplayMode = .inline
+        navigationController?.navigationBar.prefersLargeTitles = true
         collectionView.backgroundColor = .systemBackground
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
     }
@@ -20,7 +32,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
 extension CompositionalCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        3
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -34,7 +46,7 @@ struct AppsView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewController {
-        let navController = CompositionalCollectionViewController()
+        let navController = UINavigationController(rootViewController: CompositionalCollectionViewController())
         
         return navController
     }
@@ -50,5 +62,5 @@ struct AppCompositionalView: View {
 
 #Preview {
     AppsView()
-        .ignoresSafeArea()
+        .ignoresSafeArea(.all)
 }
