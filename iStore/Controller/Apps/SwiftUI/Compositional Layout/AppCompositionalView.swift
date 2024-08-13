@@ -3,6 +3,8 @@ import SwiftUI
 final class CompositionalCollectionViewController: UICollectionViewController {
     
     var apps = [HeaderApps]()
+    var topFreeApps: AppRowResults?
+    var topPaidApps: AppRowResults?
     
     init() {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
@@ -37,6 +39,32 @@ final class CompositionalCollectionViewController: UICollectionViewController {
             case .success(let apps):
                 DispatchQueue.main.async {
                     self.apps = apps ?? []
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        NetworkManager.shared.fetchTopFreeAppsForRows { results in
+            switch results {
+            case .success(let topFreeApps):
+                DispatchQueue.main.async {
+                    guard let topFreeApps else { return }
+                    self.topFreeApps = topFreeApps
+                    self.collectionView.reloadData()
+                }            
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        NetworkManager.shared.fetchTopPaidsAppsForRows { results in
+            switch results {
+            case .success(let topPaidApps):
+                DispatchQueue.main.async {
+                    guard let topPaidApps else { return }
+                    self.topPaidApps = topPaidApps
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -82,11 +110,15 @@ final class CompositionalCollectionViewController: UICollectionViewController {
 extension CompositionalCollectionViewController {
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        2
+        3
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        apps.count
+        if section == 0 {
+            apps.count
+        } else {
+            topFreeApps?.feed.results.count ?? 0
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -102,19 +134,33 @@ extension CompositionalCollectionViewController {
             cell.imageView.sd_setImage(with: URL(string: apps[indexPath.item].imageUrl))
             
             return cell
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath) as! AppRowCollectionViewCell
+            cell.nameLabel.text = topFreeApps?.feed.results[indexPath.item].name
+            cell.companyNameLabel.text = topFreeApps?.feed.results[indexPath.item].artistName
+            cell.iconImageView.sd_setImage(with: URL(string: topFreeApps?.feed.results[indexPath.item].artworkUrl100 ?? ""))
+            return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath) as! AppRowCollectionViewCell
-            
+            cell.nameLabel.text = topPaidApps?.feed.results[indexPath.item].name
+            cell.companyNameLabel.text = topPaidApps?.feed.results[indexPath.item].artistName
+            cell.iconImageView.sd_setImage(with: URL(string: topPaidApps?.feed.results[indexPath.item].artworkUrl100 ?? ""))
             return cell
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let appID: String
         if indexPath.section == 0 {
-            let id = apps[indexPath.item].id
-            let appDetailViewController = AppDetailCollectionViewController(id: id)
-            navigationController?.pushViewController(appDetailViewController, animated: true)
+            appID = apps[indexPath.item].id
+            
+        } else if indexPath.section == 1 {
+            appID = topFreeApps?.feed.results[indexPath.item].id ?? ""
+        } else {
+            appID = topPaidApps?.feed.results[indexPath.item].id ?? ""
         }
+        let appDetailViewController = AppDetailCollectionViewController(id: appID)
+        navigationController?.pushViewController(appDetailViewController, animated: true)
     }
 }
 
