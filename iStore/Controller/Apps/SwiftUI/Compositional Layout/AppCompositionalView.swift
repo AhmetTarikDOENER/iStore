@@ -34,42 +34,45 @@ final class CompositionalCollectionViewController: UICollectionViewController {
     }
     
     private func fetchApps() {
+        let dispatchGroup = DispatchGroup()
+        var headerGroup: [HeaderApps]?
+        var topFreeAppGroup: AppRowResults?
+        var topPaidAppGroup: AppRowResults?
+        dispatchGroup.enter()
         NetworkManager.shared.fetchHeaderSocialApps { results in
             switch results {
             case .success(let apps):
-                DispatchQueue.main.async {
-                    self.apps = apps ?? []
-                    self.collectionView.reloadData()
-                }
+                headerGroup = apps
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            dispatchGroup.leave()
         }
-        
+        dispatchGroup.enter()
         NetworkManager.shared.fetchTopFreeAppsForRows { results in
             switch results {
             case .success(let topFreeApps):
-                DispatchQueue.main.async {
-                    guard let topFreeApps else { return }
-                    self.topFreeApps = topFreeApps
-                    self.collectionView.reloadData()
-                }            
+                topFreeAppGroup = topFreeApps
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            dispatchGroup.leave()
         }
-        
+        dispatchGroup.enter()
         NetworkManager.shared.fetchTopPaidsAppsForRows { results in
             switch results {
             case .success(let topPaidApps):
-                DispatchQueue.main.async {
-                    guard let topPaidApps else { return }
-                    self.topPaidApps = topPaidApps
-                    self.collectionView.reloadData()
-                }
+                topPaidAppGroup = topPaidApps
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            dispatchGroup.leave()
+        }
+        dispatchGroup.notify(queue: .main) {
+            if let header = headerGroup { self.apps.append(contentsOf: header) }
+            if let freeApps = topFreeAppGroup { self.topFreeApps = freeApps }
+            if let paidApps = topPaidAppGroup { self.topPaidApps = paidApps }
+            self.collectionView.reloadData()
         }
     }
     
@@ -139,6 +142,7 @@ extension CompositionalCollectionViewController {
             cell.nameLabel.text = topFreeApps?.feed.results[indexPath.item].name
             cell.companyNameLabel.text = topFreeApps?.feed.results[indexPath.item].artistName
             cell.iconImageView.sd_setImage(with: URL(string: topFreeApps?.feed.results[indexPath.item].artworkUrl100 ?? ""))
+
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath) as! AppRowCollectionViewCell
