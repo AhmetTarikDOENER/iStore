@@ -1,5 +1,5 @@
 import Foundation
 
-struct HeaderApps: Decodable {
+struct HeaderApps: Decodable, Hashable {
     let id, name, imageUrl, tagline: String
 }

@@ -1,8 +1,17 @@
 import UIKit
+import SDWebImage
 
 final class AppsHeaderReusableCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AppsHeaderReusableCollectionViewCell"
+    
+    var headerApp: HeaderApps? {
+        didSet {
+            companyNameLabel.text = headerApp?.name
+            titleLabel.text = headerApp?.tagline
+            imageView.sd_setImage(with: URL(string: headerApp?.imageUrl ?? ""))
+        }
+    }
     
     let companyNameLabel = UILabel(text: "Facebook", font: .boldSystemFont(ofSize: 12))
     let titleLabel = UILabel(text: "Keep up with friends is faster than ever.", font: .systemFont(ofSize: 23))
