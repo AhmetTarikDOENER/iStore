@@ -25,11 +25,30 @@ final class CompositionalCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigationItem()
+        prepareCollectionView()
+        configureDiffableDataSource()
+    }
+    
+    private func configureNavigationItem() {
         navigationItem.title = "Apps"
         navigationItem.largeTitleDisplayMode = .inline
         navigationController?.navigationBar.prefersLargeTitles = true
-        prepareCollectionView()
-        configureDiffableDataSource()
+        navigationItem.rightBarButtonItem = .init(title: "Fetch Free Books", style: .plain, target: self, action: #selector(didTapFetchTopPaid))
+    }
+    
+    @objc private func didTapFetchTopPaid() {
+        NetworkManager.shared.fetchAppGroup(urlString: "https://rss.applemarketingtools.com/api/v2/us/books/top-free/25/books.json") { result in
+            switch result {
+            case .success(let books):
+                var snapshot = self.diffableDataSource.snapshot()
+                snapshot.insertSections([.topBooks], afterSection: .header)
+                snapshot.appendItems(books?.feed.results ?? [], toSection: .topBooks)
+                self.diffableDataSource.apply(snapshot)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     fileprivate func prepareCollectionView() {
@@ -43,6 +62,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
         case header
         case topFrees
         case topPaids
+        case topBooks
     }
     
     lazy var snapshot = diffableDataSource.snapshot()
