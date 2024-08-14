@@ -45,6 +45,41 @@ final class CompositionalCollectionViewController: UICollectionViewController {
         case topPaids
     }
     
+    lazy var snapshot = diffableDataSource.snapshot()
+    
+    private func fetchApps() {
+        NetworkManager.shared.fetchHeaderSocialApps { result in
+            switch result {
+            case .success(let headerApp):
+                self.snapshot.appendSections([.header])
+                self.snapshot.appendItems(headerApp ?? [])
+                self.diffableDataSource?.apply(self.snapshot)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        NetworkManager.shared.fetchTopFreeAppsForRows { result in
+            switch result {
+            case .success(let topFreeApps):
+                self.snapshot.appendSections([.topFrees])
+                self.snapshot.appendItems(topFreeApps?.feed.results ?? [])
+                self.diffableDataSource?.apply(self.snapshot)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        NetworkManager.shared.fetchTopPaidsAppsForRows { result in
+            switch result {
+            case .success(let topPaidsApps):
+                self.snapshot.appendSections([.topPaids])
+                self.snapshot.appendItems(topPaidsApps?.feed.results ?? [])
+                self.diffableDataSource?.apply(self.snapshot)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     private func configureDiffableDataSource() {
         diffableDataSource = UICollectionViewDiffableDataSource<AppSection, AnyHashable>(collectionView: collectionView) { collectionView, indexPath, object -> UICollectionViewCell? in
             if let object = object as? HeaderApps {
@@ -54,6 +89,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
             } else if let object = object as? FeedResult {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppRowCollectionViewCell.identifier, for: indexPath) as! AppRowCollectionViewCell
                 cell.app = object
+                cell.getButton.addTarget(self, action: #selector(self.didTapGetButton), for: .primaryActionTriggered)
                 return cell
             }
             return nil
@@ -70,37 +106,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
             }
             return header
         }
-        var snapshot = diffableDataSource.snapshot()
-        NetworkManager.shared.fetchHeaderSocialApps { result in
-            switch result {
-            case .success(let headerApp):
-                snapshot.appendSections([.header])
-                snapshot.appendItems(headerApp ?? [])
-                self.diffableDataSource?.apply(snapshot)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        NetworkManager.shared.fetchTopFreeAppsForRows { result in
-            switch result {
-            case .success(let topFreeApps):
-                snapshot.appendSections([.topFrees])
-                snapshot.appendItems(topFreeApps?.feed.results ?? [])
-                self.diffableDataSource?.apply(snapshot)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        NetworkManager.shared.fetchTopPaidsAppsForRows { result in
-            switch result {
-            case .success(let topPaidsApps):
-                snapshot.appendSections([.topPaids])
-                snapshot.appendItems(topPaidsApps?.feed.results ?? [])
-                self.diffableDataSource?.apply(snapshot)
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        fetchApps()
     }
 
     private static func createSectionForTopThreeApps() -> NSCollectionLayoutSection? {
@@ -114,6 +120,21 @@ final class CompositionalCollectionViewController: UICollectionViewController {
         section.contentInsets = .init(top: 0, leading: 16, bottom: 16, trailing: 16)
         
         return section
+    }
+    
+    /// This event triggers the deletion of the selected app.
+    @objc private func didTapGetButton(button: UIButton) {
+        var superview = button.superview
+        while superview != nil {
+            if let cell = superview as? UICollectionViewCell {
+                guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                guard let selectedApp = diffableDataSource.itemIdentifier(for: indexPath) else { return }
+                var snapshot = diffableDataSource.snapshot()
+                snapshot.deleteItems([selectedApp])
+                diffableDataSource.apply(snapshot)
+            }
+            superview = superview?.superview
+        }
     }
     
     private static func createSectionForBottomMultipleApps() -> NSCollectionLayoutSection? {
