@@ -62,7 +62,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
             let header = self.collectionView.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: CompositionalHeaderReusableView.identifier, for: indexPath) as! CompositionalHeaderReusableView
             let snapshot = self.diffableDataSource.snapshot()
             let item = self.diffableDataSource.itemIdentifier(for: indexPath)
-            let section = snapshot.sectionIdentifier(containingItem: item ?? nil) as! AppSection
+            let section = snapshot.sectionIdentifier(containingItem: item ?? nil)
             if section == .topFrees {
                 header.sectionHeaderLabel.text = "Top Free Apps"
             } else {
@@ -134,6 +134,20 @@ final class CompositionalCollectionViewController: UICollectionViewController {
         ]
         
         return section
+    }
+}
+
+extension CompositionalCollectionViewController {
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = diffableDataSource.itemIdentifier(for: indexPath)
+        if let item = item as? HeaderApps {
+            let detailViewController = AppDetailCollectionViewController(id: item.id)
+            navigationController?.pushViewController(detailViewController, animated: true)
+        } else if let item = item as? FeedResult {
+            let detailViewController = AppDetailCollectionViewController(id: item.id)
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
     }
 }
 
