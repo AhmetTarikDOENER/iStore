@@ -38,6 +38,7 @@ final class CompositionalCollectionViewController: UICollectionViewController {
     }
     
     @objc private func didTapFetchTopPaid() {
+        navigationItem.rightBarButtonItem = nil
         NetworkManager.shared.fetchAppGroup(urlString: "https://rss.applemarketingtools.com/api/v2/us/books/top-free/25/books.json") { result in
             switch result {
             case .success(let books):
@@ -56,6 +57,15 @@ final class CompositionalCollectionViewController: UICollectionViewController {
         collectionView.register(CompositionalHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CompositionalHeaderReusableView.identifier)
         collectionView.register(AppsHeaderReusableCollectionViewCell.self, forCellWithReuseIdentifier: AppsHeaderReusableCollectionViewCell.identifier)
         collectionView.register(AppRowCollectionViewCell.self, forCellWithReuseIdentifier: AppRowCollectionViewCell.identifier)
+        collectionView.refreshControl = UIRefreshControl()
+        collectionView.refreshControl?.addTarget(self, action: #selector(didDragForRefreshing), for: .valueChanged)
+    }
+    
+    @objc private func didDragForRefreshing() {
+        collectionView.refreshControl?.endRefreshing()
+        var snapshot = diffableDataSource.snapshot()
+        snapshot.deleteSections([.topBooks])
+        diffableDataSource.apply(snapshot)
     }
     
     enum AppSection {
@@ -121,8 +131,10 @@ final class CompositionalCollectionViewController: UICollectionViewController {
             let section = snapshot.sectionIdentifier(containingItem: item ?? nil)
             if section == .topFrees {
                 header.sectionHeaderLabel.text = "Top Free Apps"
-            } else {
+            } else if section == .topPaids {
                 header.sectionHeaderLabel.text = "Top Paid Apps"
+            } else {
+                header.sectionHeaderLabel.text = "Top Free Books"
             }
             return header
         }
